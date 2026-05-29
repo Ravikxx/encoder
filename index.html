@@ -17,9 +17,11 @@
       --red: #ef4444;
       --text: #e2e8f0;
       --muted: #64748b;
+      --l0: #ec4899;
       --l1: #06b6d4;
       --l2: #a855f7;
       --l3: #f59e0b;
+      --l4: #22c55e;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,14 +37,10 @@
       padding: 24px 16px 60px;
     }
 
-    /* ── Header ── */
-    header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
+    header { text-align: center; margin-bottom: 28px; }
     .header-badge {
       display: inline-block;
-      background: linear-gradient(135deg, #00e5ff22, #7c3aed22);
+      background: linear-gradient(135deg, #00e5ff18, #7c3aed18);
       border: 1px solid var(--accent);
       color: var(--accent);
       font-size: 0.65rem;
@@ -70,10 +68,9 @@
       margin-top: 6px;
     }
 
-    /* ── Layer legend ── */
     .layers-row {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 28px;
       flex-wrap: wrap;
       justify-content: center;
@@ -85,18 +82,13 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 0.72rem;
+      padding: 7px 12px;
+      font-size: 0.7rem;
     }
-    .layer-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
+    .layer-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .layer-chip span { color: var(--muted); }
-    .layer-chip strong { color: var(--text); font-size: 0.78rem; }
+    .layer-chip strong { color: var(--text); font-size: 0.76rem; }
 
-    /* ── Tabs ── */
     .tabs {
       display: flex;
       gap: 4px;
@@ -106,7 +98,7 @@
       padding: 4px;
       margin-bottom: 24px;
       width: 100%;
-      max-width: 680px;
+      max-width: 700px;
     }
     .tab-btn {
       flex: 1;
@@ -123,21 +115,11 @@
       transition: all .2s;
     }
     .tab-btn:hover { color: var(--text); background: var(--surface2); }
-    .tab-btn.active {
-      background: var(--surface2);
-      color: var(--accent);
-      border: 1px solid var(--border);
-    }
+    .tab-btn.active { background: var(--surface2); color: var(--accent); border: 1px solid var(--border); }
 
-    /* ── Panel ── */
-    .panel {
-      width: 100%;
-      max-width: 680px;
-      display: none;
-    }
+    .panel { width: 100%; max-width: 700px; display: none; }
     .panel.active { display: block; }
 
-    /* ── Card ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -151,6 +133,37 @@
       text-transform: uppercase;
       color: var(--muted);
       margin-bottom: 8px;
+    }
+
+    .passphrase-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .passphrase-row .card-label { margin: 0; white-space: nowrap; }
+    .pass-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--accent2);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 9px 12px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .pass-input:focus { border-color: var(--accent); }
+    .pass-input::placeholder { color: var(--muted); }
+    .key-badge {
+      font-size: 0.6rem;
+      background: var(--accent2);
+      color: #fff;
+      border-radius: 4px;
+      padding: 2px 7px;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
     }
 
     textarea {
@@ -171,13 +184,7 @@
     textarea:focus { border-color: var(--accent); }
     textarea::placeholder { color: var(--muted); }
 
-    /* ── Buttons ── */
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-      flex-wrap: wrap;
-    }
+    .btn-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
     .btn {
       padding: 10px 24px;
       border: none;
@@ -190,16 +197,9 @@
       transition: all .2s;
       font-weight: 700;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #000;
-    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #000; }
     .btn-primary:hover { opacity: .85; transform: translateY(-1px); }
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
     .btn-ghost:hover { border-color: var(--muted); color: var(--text); }
     .btn-copy {
       background: var(--surface2);
@@ -211,7 +211,6 @@
     .btn-copy:hover { color: var(--accent); border-color: var(--accent); }
     .btn-copy.copied { color: var(--green); border-color: var(--green); }
 
-    /* ── Result box ── */
     .result-box {
       background: var(--surface2);
       border: 1px solid var(--border);
@@ -221,28 +220,13 @@
       display: none;
     }
     .result-box.visible { display: block; }
-    .result-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .result-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .result-text {
-      font-size: 0.88rem;
-      color: var(--accent);
-      word-break: break-all;
-      line-height: 1.6;
-    }
+    .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .result-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+    .result-text { font-size: 0.88rem; color: var(--accent); word-break: break-all; line-height: 1.6; }
     .result-text.decoded { color: var(--green); }
-    .error-text { color: var(--red); font-size: 0.85rem; margin-top: 10px; }
+    .error-text { color: var(--red); font-size: 0.82rem; margin-top: 10px; }
 
-    /* ── Hints panel ── */
+    /* hints */
     .hint-step {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -250,43 +234,19 @@
       padding: 16px;
       margin-bottom: 12px;
     }
-    .hint-step-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
+    .hint-step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .step-badge {
       width: 28px; height: 28px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 700;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
     }
     .step-title { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
     .step-desc { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
 
-    .token-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .token-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      flex-wrap: wrap;
-    }
-    .token-idx {
-      color: var(--muted);
-      font-size: 0.7rem;
-      width: 20px;
-      flex-shrink: 0;
-    }
+    .token-grid { display: flex; flex-direction: column; gap: 6px; }
+    .token-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; flex-wrap: wrap; }
+    .token-idx { color: var(--muted); font-size: 0.7rem; width: 20px; flex-shrink: 0; }
     .token-val {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -295,33 +255,45 @@
       color: var(--text);
       word-break: break-all;
     }
-    .token-val.l1-color { border-color: var(--l1); color: var(--l1); }
-    .token-val.l2-color { border-color: var(--l2); color: var(--l2); }
-    .token-val.l3-color { border-color: var(--l3); color: var(--l3); }
+    .token-val.l0c { border-color: var(--l0); color: var(--l0); }
+    .token-val.l1c { border-color: var(--l1); color: var(--l1); }
+    .token-val.l2c { border-color: var(--l2); color: var(--l2); }
+    .token-val.l3c { border-color: var(--l3); color: var(--l3); }
+    .token-val.l4c { border-color: var(--l4); color: var(--l4); }
     .token-arrow { color: var(--muted); font-size: 0.75rem; }
-
     .shift-badge {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       background: var(--accent2);
       color: #fff;
       border-radius: 4px;
       padding: 2px 6px;
-      opacity: .8;
+      opacity: .85;
     }
-
     .final-output {
       background: var(--bg);
       border: 1px solid var(--accent);
       border-radius: 8px;
       padding: 14px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--accent);
       word-break: break-all;
       margin-top: 8px;
       text-align: center;
     }
 
-    /* ── Prompts section ── */
+    .key-schedule-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-top: 8px;
+      word-break: break-all;
+    }
+    .key-schedule-box span { color: var(--text); }
+
     .prompt-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -336,11 +308,7 @@
       color: var(--accent3);
       margin-bottom: 8px;
     }
-    .prompt-card p {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+    .prompt-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
     .prompt-card code {
       background: var(--surface2);
       border-radius: 4px;
@@ -349,14 +317,8 @@
       font-size: 0.78rem;
     }
 
-    /* ── Separator ── */
-    .sep {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 20px 0;
-    }
+    .sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
-    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -365,56 +327,58 @@
 <body>
 
 <header>
-  <div class="header-badge">&#x25C6; Cryptographic Engine v1.0 &#x25C6;</div>
+  <div class="header-badge">&#x25C6; Cryptographic Engine v2.0 &#x25C6;</div>
   <h1>Trilayer Chaos</h1>
-  <div class="subtitle">3-Layer Cipher &nbsp;·&nbsp; Encoder / Decoder / Hint Generator</div>
+  <div class="subtitle">5-Layer Key-Locked Cipher &nbsp;·&nbsp; Encode / Decode / Trace</div>
 </header>
 
-<!-- Layer legend -->
 <div class="layers-row">
   <div class="layer-chip">
+    <div class="layer-dot" style="background:var(--l0)"></div>
+    <div><strong>L0</strong><br><span>Key Substitution</span></div>
+  </div>
+  <div class="layer-chip">
     <div class="layer-dot" style="background:var(--l1)"></div>
-    <div>
-      <strong>L1</strong><br>
-      <span>Reverse + Length Tag</span>
-    </div>
+    <div><strong>L1</strong><br><span>Reverse + Blind Tag</span></div>
   </div>
   <div class="layer-chip">
     <div class="layer-dot" style="background:var(--l2)"></div>
-    <div>
-      <strong>L2</strong><br>
-      <span>Positional Caesar Shift</span>
-    </div>
+    <div><strong>L2</strong><br><span>Non-linear Caesar</span></div>
   </div>
   <div class="layer-chip">
     <div class="layer-dot" style="background:var(--l3)"></div>
-    <div>
-      <strong>L3</strong><br>
-      <span>Adjacent Pair Swap</span>
-    </div>
+    <div><strong>L3</strong><br><span>Pair Swap</span></div>
+  </div>
+  <div class="layer-chip">
+    <div class="layer-dot" style="background:var(--l4)"></div>
+    <div><strong>L4</strong><br><span>Vigenere Pass</span></div>
   </div>
 </div>
 
-<!-- Tabs -->
 <div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('encode')">&#x2191; Encode</button>
-  <button class="tab-btn" onclick="switchTab('decode')">&#x2193; Decode</button>
-  <button class="tab-btn" onclick="switchTab('hints')">&#x25D1; Hints</button>
+  <button class="tab-btn active" onclick="switchTab('encode', this)">&#x2191; Encode</button>
+  <button class="tab-btn" onclick="switchTab('decode', this)">&#x2193; Decode</button>
+  <button class="tab-btn" onclick="switchTab('hints', this)">&#x25D1; Trace</button>
 </div>
 
-<!-- ENCODE PANEL -->
+<!-- ENCODE -->
 <div id="panel-encode" class="panel active">
   <div class="card">
-    <div class="card-label">Plaintext Input</div>
+    <div class="passphrase-row">
+      <div class="card-label">Passphrase</div>
+      <input class="pass-input" id="enc-pass" type="password" placeholder="Secret key (required)" autocomplete="off" />
+      <span class="key-badge">&#x1F512; KEY</span>
+    </div>
+    <div class="card-label">Plaintext</div>
     <textarea id="encode-input" placeholder="Type your message here…" rows="4"></textarea>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="runEncode()">Encode &rarr;</button>
-      <button class="btn btn-ghost" onclick="clearEncode()">Clear</button>
+      <button class="btn btn-ghost" onclick="clearPanel('encode')">Clear</button>
     </div>
     <div id="encode-result" class="result-box">
       <div class="result-header">
         <span class="result-label">Ciphertext</span>
-        <button class="btn btn-copy" id="copy-encode-btn" onclick="copyResult('encode-output','copy-encode-btn')">Copy</button>
+        <button class="btn btn-copy" id="copy-enc-btn" onclick="copyResult('encode-output','copy-enc-btn')">Copy</button>
       </div>
       <div id="encode-output" class="result-text"></div>
     </div>
@@ -422,19 +386,24 @@
   </div>
 </div>
 
-<!-- DECODE PANEL -->
+<!-- DECODE -->
 <div id="panel-decode" class="panel">
   <div class="card">
-    <div class="card-label">Ciphertext Input</div>
-    <textarea id="decode-input" placeholder="Paste ciphertext here, e.g. <<token1~~token2>>" rows="4"></textarea>
+    <div class="passphrase-row">
+      <div class="card-label">Passphrase</div>
+      <input class="pass-input" id="dec-pass" type="password" placeholder="Secret key (required)" autocomplete="off" />
+      <span class="key-badge">&#x1F512; KEY</span>
+    </div>
+    <div class="card-label">Ciphertext</div>
+    <textarea id="decode-input" placeholder="Paste ciphertext here, wrapped in << >>" rows="4"></textarea>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="runDecode()">Decode &rarr;</button>
-      <button class="btn btn-ghost" onclick="clearDecode()">Clear</button>
+      <button class="btn btn-ghost" onclick="clearPanel('decode')">Clear</button>
     </div>
     <div id="decode-result" class="result-box">
       <div class="result-header">
         <span class="result-label">Plaintext</span>
-        <button class="btn btn-copy" id="copy-decode-btn" onclick="copyResult('decode-output','copy-decode-btn')">Copy</button>
+        <button class="btn btn-copy" id="copy-dec-btn" onclick="copyResult('decode-output','copy-dec-btn')">Copy</button>
       </div>
       <div id="decode-output" class="result-text decoded"></div>
     </div>
@@ -442,14 +411,18 @@
   </div>
 </div>
 
-<!-- HINTS PANEL -->
+<!-- HINTS / TRACE -->
 <div id="panel-hints" class="panel">
   <div class="card">
-    <div class="card-label">Enter plaintext to trace</div>
+    <div class="passphrase-row">
+      <div class="card-label">Passphrase</div>
+      <input class="pass-input" id="hint-pass" type="text" placeholder="Enter key to trace all layers" autocomplete="off" />
+    </div>
+    <div class="card-label">Plaintext to trace</div>
     <textarea id="hints-input" placeholder="Type a message to see each layer's transformation…" rows="3"></textarea>
     <div class="btn-row">
-      <button class="btn btn-primary" onclick="runHints()">Generate Hints &rarr;</button>
-      <button class="btn btn-ghost" onclick="clearHints()">Clear</button>
+      <button class="btn btn-primary" onclick="runHints()">Generate Trace &rarr;</button>
+      <button class="btn btn-ghost" onclick="clearPanel('hints')">Clear</button>
     </div>
   </div>
 
@@ -457,204 +430,286 @@
 
   <hr class="sep">
 
-  <!-- Static prompts reference -->
   <div class="prompt-card">
-    <h3>&#x25B6; How to read the cipher</h3>
-    <p>Each word becomes an independent token joined by <code>~~</code> and wrapped in <code>&lt;&lt; &gt;&gt;</code>. The token index (1-based) drives the Caesar shift — word 1 shifts by 1, word 2 by 2, and so on.</p>
+    <h3>&#x25B6; Why this is hard to crack</h3>
+    <p>Without the passphrase, all 5 layers are unknown: the substitution alphabet (26! ≈ 4×10²⁶ possibilities), the 64-entry shift table (25⁶⁴ ≈ 10⁸⁹ possibilities), and the 64-entry Vigenere key. The length tag is obfuscated using a key-derived base-26 alphabet, so word lengths are hidden. The token separator is also key-derived, so even splitting tokens requires the key.</p>
   </div>
   <div class="prompt-card">
-    <h3>&#x25B6; Layer order matters</h3>
-    <p><strong>Encode:</strong> L1 &rarr; L2 &rarr; L3 &nbsp;|&nbsp; <strong>Decode:</strong> L3 &rarr; L2 &rarr; L1<br>
-    L3 is self-inverse (applying it twice restores the original), so the decode step for L3 is identical to encode.</p>
+    <h3>&#x25B6; Layer stack (encode order)</h3>
+    <p>
+      <code>L0</code> Key-seeded Fisher-Yates monoalphabetic substitution &rarr;
+      <code>L1</code> Reverse body + blind 2-letter tag &rarr;
+      <code>L2</code> Key-seeded non-linear Caesar per token &rarr;
+      <code>L3</code> Adjacent letter-pair swap (self-inverse) &rarr;
+      <code>L4</code> Per-token Vigenere using key-derived stream
+    </p>
   </div>
   <div class="prompt-card">
-    <h3>&#x25B6; Caesar wrap-around</h3>
-    <p>Shifts wrap the alphabet: <code>z</code> shifted +1 becomes <code>a</code>. Case is preserved. Non-letter characters (<code>@</code>, digits, symbols) are never shifted.</p>
-  </div>
-  <div class="prompt-card">
-    <h3>&#x25B6; Pair-swap edge case</h3>
-    <p>If the token body has an odd number of letters, the last letter is left in place — only complete pairs are swapped.</p>
+    <h3>&#x25B6; Wrong key behaviour</h3>
+    <p>Using the wrong passphrase during decode silently produces garbage — no error is thrown. The only way to verify correctness is recognising the output as valid plaintext.</p>
   </div>
 </div>
 
 <script>
 // ─────────────────────────────────────────────
-//  CIPHER CORE
+//  PRNG + KEY SCHEDULE
 // ─────────────────────────────────────────────
 
-function isLetter(ch) { return /[a-zA-Z]/.test(ch); }
-
-// L1 encode: reverse word + append @length
-function l1Encode(word) {
-  return word.split('').reverse().join('') + '@' + word.length;
+function fnv32(s) {
+  let h = 0x811c9dc5 >>> 0;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h;
 }
 
-// L1 decode: strip @N tag, reverse body
-function l1Decode(token) {
-  const at = token.lastIndexOf('@');
-  const body = token.substring(0, at);
-  return body.split('').reverse().join('');
+function makePRNG(seed) {
+  let s = (seed >>> 0) || 1;
+  return () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; return (s >>> 0) / 4294967296; };
 }
 
-// Shift a single letter by n (positive = forward, negative = backward), wrapping
+function shuffle(arr, rng) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function buildSchedule(pass) {
+  if (!pass || !pass.trim()) throw new Error('Passphrase is required to encode or decode.');
+  const rng = makePRNG(fnv32(pass + '\x01' + pass.split('').reverse().join('')));
+
+  // L0: substitution alphabet (fwd: plaintext → ciphertext, rev: inverse)
+  const fwd = shuffle(Array.from({length: 26}, (_, i) => i), makePRNG(fnv32(pass + 'L0fwd')));
+  const rev = new Array(26);
+  fwd.forEach((v, i) => rev[v] = i);
+
+  // L2: 64 non-linear Caesar shifts (1–25)
+  const rng2 = makePRNG(fnv32(pass + 'L2shifts'));
+  const shifts = Array.from({length: 64}, () => 1 + Math.floor(rng2() * 25));
+
+  // Tag encoding alphabet (hides word lengths)
+  const tagFwd = shuffle(Array.from({length: 26}, (_, i) => i), makePRNG(fnv32(pass + 'TAG')));
+  const tagRev = new Array(26);
+  tagFwd.forEach((v, i) => tagRev[v] = i);
+
+  // L4: Vigenere keystream (64 values 0–25)
+  const rng4 = makePRNG(fnv32(pass + 'L4vigenere'));
+  const vKey = Array.from({length: 64}, () => Math.floor(rng4() * 26));
+
+  // Token separator: 3 digits (0–9), digits never appear in cipher token bodies
+  const rngSep = makePRNG(fnv32(pass + 'SEP'));
+  const sep = [0, 1, 2].map(() => String.fromCharCode(48 + Math.floor(rngSep() * 10))).join('');
+
+  return { fwd, rev, shifts, tagFwd, tagRev, vKey, sep };
+}
+
+// ─────────────────────────────────────────────
+//  HELPERS
+// ─────────────────────────────────────────────
+
+const isLetter = ch => /[a-zA-Z]/.test(ch);
+
 function shiftLetter(ch, n) {
   if (!isLetter(ch)) return ch;
   const base = ch >= 'a' && ch <= 'z' ? 97 : 65;
-  return String.fromCharCode(((ch.charCodeAt(0) - base + ((n % 26) + 26)) % 26) + base);
+  return String.fromCharCode(((ch.charCodeAt(0) - base + ((n % 26 + 26) % 26)) % 26) + base);
 }
 
-// L2 encode: Caesar-shift letters in token body by +n; tag untouched
-function l2Encode(token, n) {
-  const at = token.lastIndexOf('@');
-  const body = token.substring(0, at);
-  const tag = token.substring(at);
-  return body.split('').map(ch => shiftLetter(ch, n)).join('') + tag;
+// Tag is always 3 chars: @XY — so body = token.slice(0,-3), tag = token.slice(-3)
+function bodyOf(token) { return token.slice(0, -3); }
+function tagOf(token) { return token.slice(-3); }
+
+// ─────────────────────────────────────────────
+//  L0 — KEY SUBSTITUTION
+// ─────────────────────────────────────────────
+
+function l0Apply(word, table) {
+  return [...word].map(c => {
+    if (!isLetter(c)) return c;
+    const base = c >= 'a' && c <= 'z' ? 97 : 65;
+    return String.fromCharCode(table[c.charCodeAt(0) - base] + base);
+  }).join('');
 }
 
-// L2 decode: reverse Caesar shift
-function l2Decode(token, n) {
-  return l2Encode(token, -n);
+// ─────────────────────────────────────────────
+//  L1 — REVERSE + BLIND TAG
+// ─────────────────────────────────────────────
+
+function encodeLen(n, tagFwd) {
+  return String.fromCharCode(tagFwd[n % 26] + 97) +
+         String.fromCharCode(tagFwd[Math.floor(n / 26) % 26] + 97);
 }
 
-// L3: swap adjacent letter pairs in token body; self-inverse
+function l1Encode(word, sch) {
+  return word.split('').reverse().join('') + '@' + encodeLen(word.length, sch.tagFwd);
+}
+
+function l1Decode(token, sch) {
+  return bodyOf(token).split('').reverse().join('');
+}
+
+// ─────────────────────────────────────────────
+//  L2 — NON-LINEAR KEY-SEEDED CAESAR
+// ─────────────────────────────────────────────
+
+function l2Encode(token, idx, sch) {
+  const shift = sch.shifts[idx % 64];
+  return bodyOf(token).split('').map(c => shiftLetter(c, shift)).join('') + tagOf(token);
+}
+
+function l2Decode(token, idx, sch) {
+  const shift = sch.shifts[idx % 64];
+  return bodyOf(token).split('').map(c => shiftLetter(c, -shift)).join('') + tagOf(token);
+}
+
+// ─────────────────────────────────────────────
+//  L3 — ADJACENT LETTER PAIR SWAP (self-inverse)
+// ─────────────────────────────────────────────
+
 function l3Apply(token) {
-  const at = token.lastIndexOf('@');
-  const body = token.substring(0, at);
-  const tag = token.substring(at);
-
-  // Collect positions of letters only
+  const body = bodyOf(token);
   const lpos = [];
-  for (let i = 0; i < body.length; i++) {
-    if (isLetter(body[i])) lpos.push(i);
-  }
-
+  for (let i = 0; i < body.length; i++) if (isLetter(body[i])) lpos.push(i);
   const chars = body.split('');
-  for (let i = 0; i + 1 < lpos.length; i += 2) {
-    const a = lpos[i], b = lpos[i + 1];
-    [chars[a], chars[b]] = [chars[b], chars[a]];
-  }
-  return chars.join('') + tag;
+  for (let i = 0; i + 1 < lpos.length; i += 2)
+    [chars[lpos[i]], chars[lpos[i+1]]] = [chars[lpos[i+1]], chars[lpos[i]]];
+  return chars.join('') + tagOf(token);
 }
 
-// Full encode pipeline
-function encode(plaintext) {
-  const words = plaintext.split(' ');
-  const tokens = words.map((word, i) => {
-    let t = l1Encode(word);
-    t = l2Encode(t, i + 1);
+// ─────────────────────────────────────────────
+//  L4 — PER-TOKEN VIGENERE
+// ─────────────────────────────────────────────
+
+function l4Apply(token, idx, sch, sign) {
+  const body = bodyOf(token);
+  let lc = 0;
+  const result = body.split('').map(c => {
+    if (!isLetter(c)) return c;
+    return shiftLetter(c, sign * sch.vKey[(idx * 7 + lc++) % 64]);
+  }).join('');
+  return result + tagOf(token);
+}
+
+// ─────────────────────────────────────────────
+//  FULL ENCODE / DECODE
+// ─────────────────────────────────────────────
+
+function encode(plaintext, passphrase) {
+  const sch = buildSchedule(passphrase);
+  const tokens = plaintext.split(' ').map((word, i) => {
+    let t = l0Apply(word, sch.fwd);
+    t = l1Encode(t, sch);
+    t = l2Encode(t, i, sch);
     t = l3Apply(t);
+    t = l4Apply(t, i, sch, 1);
     return t;
   });
-  return '<<' + tokens.join('~~') + '>>';
+  return '<<' + tokens.join(sch.sep) + '>>';
 }
 
-// Full decode pipeline
-function decode(ciphertext) {
-  const trimmed = ciphertext.trim();
-  if (!trimmed.startsWith('<<') || !trimmed.endsWith('>>')) {
-    throw new Error('Ciphertext must be wrapped in << >>');
-  }
-  const inner = trimmed.slice(2, -2);
+function decode(ciphertext, passphrase) {
+  const sch = buildSchedule(passphrase);
+  const s = ciphertext.trim();
+  if (!s.startsWith('<<') || !s.endsWith('>>'))
+    throw new Error('Invalid format — wrap ciphertext in << >>');
+  const inner = s.slice(2, -2);
   if (!inner) throw new Error('Empty ciphertext');
-  const tokens = inner.split('~~');
-  const words = tokens.map((token, i) => {
-    if (!token.includes('@')) throw new Error(`Token ${i + 1} is missing the @N length tag`);
-    let t = l3Apply(token);
-    t = l2Decode(t, i + 1);
-    return l1Decode(t);
-  });
-  return words.join(' ');
+  return inner.split(sch.sep).map((token, i) => {
+    if (token.length < 3) throw new Error(`Token ${i+1} is malformed (too short)`);
+    let t = l4Apply(token, i, sch, -1);
+    t = l3Apply(t);
+    t = l2Decode(t, i, sch);
+    t = l1Decode(t, sch);
+    t = l0Apply(t, sch.rev);
+    return t;
+  }).join(' ');
 }
 
 // ─────────────────────────────────────────────
-//  HINT TRACE (step-by-step)
+//  HINT TRACE
 // ─────────────────────────────────────────────
 
-function buildHints(plaintext) {
+function buildHints(plaintext, passphrase) {
+  const sch = buildSchedule(passphrase);
   const words = plaintext.split(' ');
-  const afterL1 = words.map(l1Encode);
-  const afterL2 = afterL1.map((t, i) => l2Encode(t, i + 1));
-  const afterL3 = afterL2.map(l3Apply);
-  const final = '<<' + afterL3.join('~~') + '>>';
+
+  const s0 = words;
+  const s1 = words.map(w => l0Apply(w, sch.fwd));
+  const s2 = s1.map((w, i) => l1Encode(w, sch));
+  const s3 = s2.map((t, i) => l2Encode(t, i, sch));
+  const s4 = s3.map(l3Apply);
+  const s5 = s4.map((t, i) => l4Apply(t, i, sch, 1));
+  const final = '<<' + s5.join(sch.sep) + '>>';
 
   let html = '';
 
-  // Step 0 — original words
-  html += makeStep(
-    '0', '#64748b',
-    'Original Words',
-    'Space-separated input tokens (1-indexed)',
-    words.map((w, i) => `<div class="token-row">
-      <span class="token-idx">${i+1}.</span>
-      <span class="token-val">${esc(w)}</span>
-      <span class="token-arrow">len=${w.length}</span>
-    </div>`).join('')
-  );
+  // Key schedule summary
+  const subDisp = sch.fwd.map(v => String.fromCharCode(v + 97)).join('');
+  const shiftDisp = sch.shifts.slice(0, 16).join(',') + '…';
+  const vDisp = sch.vKey.slice(0, 16).join(',') + '…';
+  html += `<div class="hint-step">
+    <div class="hint-step-header">
+      <div class="step-badge" style="background:#7c3aed22;border:1px solid #7c3aed;color:#7c3aed">&#x1F512;</div>
+      <div>
+        <div class="step-title" style="color:#a855f7">Key Schedule Derived from Passphrase</div>
+        <div class="step-desc">All parameters below are deterministically derived from your passphrase</div>
+      </div>
+    </div>
+    <div class="key-schedule-box">
+      L0 sub-alphabet&nbsp;(a→?): <span>${esc(subDisp)}</span><br>
+      L2 shift table [0..15]: <span>${esc(shiftDisp)}</span><br>
+      L4 Vigenere key [0..15]: <span>${esc(vDisp)}</span><br>
+      Token separator: <span>${esc(sch.sep)}</span>
+    </div>
+  </div>`;
 
-  // Step 1 — after L1
-  html += makeStep(
-    'L1', 'var(--l1)',
-    'Reverse + Length Tag',
-    'Each word is reversed and @N is appended (N = original length)',
-    words.map((w, i) => `<div class="token-row">
-      <span class="token-idx">${i+1}.</span>
-      <span class="token-val">${esc(w)}</span>
-      <span class="token-arrow">&#x2192;</span>
-      <span class="token-val l1-color">${esc(afterL1[i])}</span>
-    </div>`).join('')
-  );
+  html += makeStep('0', '#64748b', 'Original Words', 'Space-separated plaintext tokens',
+    s0.map((w, i) => row(i, '', w, '', '')).join(''));
 
-  // Step 2 — after L2
-  html += makeStep(
-    'L2', 'var(--l2)',
-    'Positional Caesar Shift',
-    'Letters in token N are shifted forward by N positions (wraps at Z)',
-    afterL1.map((t, i) => `<div class="token-row">
-      <span class="token-idx">${i+1}.</span>
-      <span class="token-val l1-color">${esc(t)}</span>
-      <span class="token-arrow">&#x2192;</span>
-      <span class="shift-badge">+${i+1}</span>
-      <span class="token-val l2-color">${esc(afterL2[i])}</span>
-    </div>`).join('')
-  );
+  html += makeStep('L0', 'var(--l0)', 'Key Substitution',
+    'Each letter mapped through key-shuffled alphabet — requires passphrase to reverse',
+    s0.map((w, i) => row(i, w, s1[i], 'l0c', '')).join(''));
 
-  // Step 3 — after L3
-  html += makeStep(
-    'L3', 'var(--l3)',
-    'Adjacent Letter Pair Swap',
-    'Letter positions in token body swapped in pairs: (0↔1), (2↔3), …',
-    afterL2.map((t, i) => {
-      const bodyEnd = t.lastIndexOf('@');
-      const body = t.substring(0, bodyEnd);
-      const lpos = [];
-      for (let k = 0; k < body.length; k++) if (isLetter(body[k])) lpos.push(k);
-      const pairs = [];
-      for (let k = 0; k + 1 < lpos.length; k += 2) {
-        pairs.push(`(${lpos[k]}↔${lpos[k+1]})`);
-      }
-      return `<div class="token-row">
-        <span class="token-idx">${i+1}.</span>
-        <span class="token-val l2-color">${esc(t)}</span>
-        <span class="token-arrow">&#x2192;</span>
-        <span class="token-val l3-color">${esc(afterL3[i])}</span>
-        ${pairs.length ? `<span class="token-arrow" style="font-size:.65rem;color:var(--muted)">${pairs.join(' ')}</span>` : ''}
-      </div>`;
-    }).join('')
-  );
+  html += makeStep('L1', 'var(--l1)', 'Reverse + Blind Tag',
+    'Word reversed; length encoded as 2-letter key-obfuscated tag (hides word lengths)',
+    s1.map((w, i) => row(i, w, s2[i], 'l1c', '')).join(''));
 
-  // Final assembly
+  html += makeStep('L2', 'var(--l2)', 'Non-linear Key-seeded Caesar',
+    'Letters shifted by key-derived amount per token (not sequential)',
+    s2.map((t, i) => row(i, t, s3[i], 'l2c', `+${sch.shifts[i%64]}`)).join(''));
+
+  html += makeStep('L3', 'var(--l3)', 'Adjacent Letter Pair Swap',
+    'Letter positions swapped in pairs: (0↔1), (2↔3)… — self-inverse',
+    s3.map((t, i) => row(i, t, s4[i], 'l3c', '')).join(''));
+
+  html += makeStep('L4', 'var(--l4)', 'Per-token Vigenere',
+    'Each letter shifted by key-derived Vigenere stream (unique per token position)',
+    s4.map((t, i) => row(i, t, s5[i], 'l4c', `vk@${(i*7)%64}`)).join(''));
+
   html += `<div class="hint-step">
     <div class="hint-step-header">
       <div class="step-badge" style="background:#00e5ff22;border:1px solid var(--accent);color:var(--accent)">&sum;</div>
       <div>
         <div class="step-title" style="color:var(--accent)">Final Ciphertext</div>
-        <div class="step-desc">Tokens joined with ~~ and wrapped in &lt;&lt; &gt;&gt;</div>
+        <div class="step-desc">Tokens joined with key-derived separator and wrapped in &lt;&lt; &gt;&gt;</div>
       </div>
     </div>
     <div class="final-output">${esc(final)}</div>
   </div>`;
 
   return html;
+}
+
+function row(i, from, to, cls, badge) {
+  return `<div class="token-row">
+    <span class="token-idx">${i+1}.</span>
+    ${from ? `<span class="token-val">${esc(from)}</span><span class="token-arrow">&#x2192;</span>` : ''}
+    <span class="token-val ${cls}">${esc(to)}</span>
+    ${badge ? `<span class="shift-badge">${esc(badge)}</span>` : ''}
+  </div>`;
 }
 
 function makeStep(label, color, title, desc, bodyHtml) {
@@ -671,123 +726,102 @@ function makeStep(label, color, title, desc, bodyHtml) {
 }
 
 function esc(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 // ─────────────────────────────────────────────
-//  UI HANDLERS
+//  UI
 // ─────────────────────────────────────────────
 
-function switchTab(name) {
+function switchTab(name, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + name).classList.add('active');
-  event.currentTarget.classList.add('active');
+  btn.classList.add('active');
 }
 
 function runEncode() {
+  const pass = document.getElementById('enc-pass').value;
   const input = document.getElementById('encode-input').value;
   const errEl = document.getElementById('encode-error');
   const resEl = document.getElementById('encode-result');
   const outEl = document.getElementById('encode-output');
   errEl.textContent = '';
-
-  if (!input.trim()) {
-    errEl.textContent = 'Please enter a message to encode.';
-    resEl.classList.remove('visible');
-    return;
-  }
   try {
-    const result = encode(input);
+    if (!input.trim()) throw new Error('Please enter a message to encode.');
+    const result = encode(input, pass);
     outEl.textContent = result;
     resEl.classList.add('visible');
-    resetCopyBtn('copy-encode-btn');
+    resetCopy('copy-enc-btn');
   } catch (e) {
-    errEl.textContent = 'Error: ' + e.message;
+    errEl.textContent = e.message;
     resEl.classList.remove('visible');
   }
-}
-
-function clearEncode() {
-  document.getElementById('encode-input').value = '';
-  document.getElementById('encode-result').classList.remove('visible');
-  document.getElementById('encode-error').textContent = '';
 }
 
 function runDecode() {
+  const pass = document.getElementById('dec-pass').value;
   const input = document.getElementById('decode-input').value;
   const errEl = document.getElementById('decode-error');
   const resEl = document.getElementById('decode-result');
   const outEl = document.getElementById('decode-output');
   errEl.textContent = '';
-
-  if (!input.trim()) {
-    errEl.textContent = 'Please enter ciphertext to decode.';
-    resEl.classList.remove('visible');
-    return;
-  }
   try {
-    const result = decode(input);
+    if (!input.trim()) throw new Error('Please paste a ciphertext to decode.');
+    const result = decode(input, pass);
     outEl.textContent = result;
     resEl.classList.add('visible');
-    resetCopyBtn('copy-decode-btn');
+    resetCopy('copy-dec-btn');
   } catch (e) {
-    errEl.textContent = 'Error: ' + e.message;
+    errEl.textContent = e.message;
     resEl.classList.remove('visible');
   }
-}
-
-function clearDecode() {
-  document.getElementById('decode-input').value = '';
-  document.getElementById('decode-result').classList.remove('visible');
-  document.getElementById('decode-error').textContent = '';
 }
 
 function runHints() {
+  const pass = document.getElementById('hint-pass').value;
   const input = document.getElementById('hints-input').value;
   const outEl = document.getElementById('hints-output');
-
-  if (!input.trim()) {
-    outEl.innerHTML = '<div class="error-text">Please enter a message to trace.</div>';
-    return;
+  try {
+    if (!input.trim()) throw new Error('Please enter a message to trace.');
+    outEl.innerHTML = buildHints(input, pass);
+  } catch (e) {
+    outEl.innerHTML = `<div class="error-text">${esc(e.message)}</div>`;
   }
-  outEl.innerHTML = buildHints(input);
 }
 
-function clearHints() {
-  document.getElementById('hints-input').value = '';
-  document.getElementById('hints-output').innerHTML = '';
+function clearPanel(name) {
+  if (name === 'encode') {
+    document.getElementById('encode-input').value = '';
+    document.getElementById('encode-result').classList.remove('visible');
+    document.getElementById('encode-error').textContent = '';
+  } else if (name === 'decode') {
+    document.getElementById('decode-input').value = '';
+    document.getElementById('decode-result').classList.remove('visible');
+    document.getElementById('decode-error').textContent = '';
+  } else {
+    document.getElementById('hints-input').value = '';
+    document.getElementById('hints-output').innerHTML = '';
+  }
 }
 
 function copyResult(outputId, btnId) {
-  const text = document.getElementById(outputId).textContent;
-  navigator.clipboard.writeText(text).then(() => {
+  navigator.clipboard.writeText(document.getElementById(outputId).textContent).then(() => {
     const btn = document.getElementById(btnId);
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = 'Copy';
-      btn.classList.remove('copied');
-    }, 1800);
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
   });
 }
 
-function resetCopyBtn(btnId) {
+function resetCopy(btnId) {
   const btn = document.getElementById(btnId);
   btn.textContent = 'Copy';
   btn.classList.remove('copied');
 }
 
-// Allow Enter key in encode/decode to trigger action
-document.getElementById('encode-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && e.ctrlKey) runEncode();
-});
-document.getElementById('decode-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && e.ctrlKey) runDecode();
-});
+document.getElementById('encode-input').addEventListener('keydown', e => { if (e.ctrlKey && e.key==='Enter') runEncode(); });
+document.getElementById('decode-input').addEventListener('keydown', e => { if (e.ctrlKey && e.key==='Enter') runDecode(); });
 </script>
 </body>
 </html>
