@@ -228,7 +228,7 @@
 <div class="layers-row">
   <div class="layer-chip">
     <div class="layer-dot" style="background:var(--sc)"></div>
-    <div>SC<div class="chip-desc">j-escape: special chars &amp; spaces; q-escape: emojis</div></div>
+    <div>SC<div class="chip-desc">j/q-escape: common chars &amp; emojis; x-escape: everything else</div></div>
   </div>
   <div class="layer-chip">
     <div class="layer-dot" style="background:var(--l1)"></div>
@@ -265,7 +265,7 @@
 <!-- ENCODE -->
 <div id="panel-encode" class="panel active">
   <div class="card">
-    <div class="card-label">Plaintext &mdash; letters, spaces, punctuation &amp; emojis</div>
+    <div class="card-label">Plaintext &mdash; any text, symbols, or emojis</div>
     <textarea id="enc-input" placeholder="Hello world! What's happening?" rows="4"></textarea>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="runEncode()">Encode &rarr;</button>
@@ -401,7 +401,8 @@ function scEncode(s) {
   for (const ch of s) {
     if (ch in J_MAP) out += 'j' + J_MAP[ch];
     else if (ch in Q_MAP) out += 'q' + Q_MAP[ch];
-    else out += ch;
+    else if (ch !== 'x' && isLetter(ch)) out += ch;
+    else out += 'x' + encodeCP(ch.codePointAt(0));
   }
   return out;
 }
@@ -410,6 +411,7 @@ function scDecode(s) {
   while (i < s.length) {
     if (s[i]==='j' && i+1<s.length && s[i+1] in J_REV) { out += J_REV[s[i+1]]; i+=2; }
     else if (s[i]==='q' && i+1<s.length && s[i+1] in Q_REV) { out += Q_REV[s[i+1]]; i+=2; }
+    else if (s[i]==='x' && i+6<=s.length) { out += String.fromCodePoint(decodeCP(s.slice(i+1,i+6))); i+=6; }
     else out += s[i++];
   }
   return out;
@@ -456,6 +458,18 @@ function encodeLen(n) {
 }
 function decodeLen(s) {
   return ((s.charCodeAt(0) - 97 - 5 + 26) * 15) % 26;
+}
+
+// x-escape: encodes ANY code point as 5 letters (covers all Unicode up to 11M)
+function encodeCP(n) {
+  let s = '';
+  for (let i = 0; i < 5; i++) { s += String.fromCharCode(n % 26 + 97); n = Math.floor(n / 26); }
+  return s;
+}
+function decodeCP(s) {
+  let n = 0;
+  for (let i = 4; i >= 0; i--) n = n * 26 + (s.charCodeAt(i) - 97);
+  return n;
 }
 function l1Encode(chunk) {
   const rev = chunk.split('').reverse().join('');
@@ -574,10 +588,6 @@ function colTranspose(str, decode) {
 
 function validateInput(s) {
   if (!s.trim()) throw new Error('Please enter a message.');
-  for (const ch of s) {
-    if (!isLetter(ch) && !(ch in J_MAP) && !(ch in Q_MAP))
-      throw new Error(`Character not supported: ${ch}`);
-  }
 }
 
 function encode(plaintext) {
@@ -633,15 +643,19 @@ function buildTrace(plaintext) {
 
   const seenJ = new Set([...plaintext].filter(ch => ch in J_MAP));
   const seenQ = new Set([...plaintext].filter(ch => ch in Q_MAP && ch !== 'q'));
+  const seenX = new Set([...plaintext].filter(ch => ch !== 'x' && !isLetter(ch) && !(ch in J_MAP) && !(ch in Q_MAP)));
+  const hasX  = plaintext.includes('x');
   const sc_badge = [
     ...[...seenJ].map(ch => `${ch===' '?'[sp]':ch}→j${J_MAP[ch]}`),
     ...[...seenQ].map(ch => `${ch}→q${Q_MAP[ch]}`),
+    ...[...seenX].map(ch => `${ch}→x+5`),
+    ...(hasX ? ['x→x+5'] : []),
   ].join(' ');
 
   let html = '';
 
-  html += step('SC','var(--sc)','Special Char &amp; Emoji Encoding',
-    'Special chars &amp; spaces → j+letter (j→jj self-escape); emojis → q+letter (q→qq self-escape)',
+  html += step('SC','var(--sc)','Universal Encoding',
+    'j+letter: special chars/space; q+letter: top emojis; x+5letters: everything else (full Unicode)',
     tok(0, plaintext, sc_full, 'scc', sc_badge));
 
   html += step('L1','var(--l1)','Chunk + Reverse + Pad + Blind Tag',
