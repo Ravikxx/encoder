@@ -334,8 +334,8 @@
 <!-- ENCODE -->
 <div id="panel-encode" class="panel active">
   <div class="card">
-    <div class="card-label">Plaintext (letters and spaces only)</div>
-    <textarea id="encode-input" placeholder="Type your message here…" rows="4"></textarea>
+    <div class="card-label">Plaintext (letters, spaces, punctuation — no ~ or @)</div>
+    <textarea id="encode-input" placeholder="Type your message here… e.g. Hello world! What now?" rows="4"></textarea>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="runEncode()">Encode &rarr;</button>
       <button class="btn btn-ghost" onclick="clearPanel('encode')">Clear</button>
@@ -561,9 +561,10 @@ function colTranspose(str, decode) {
 //  FULL ENCODE / DECODE
 // ─────────────────────────────────────────────
 
+// Reserved: ~ (separator) and @ (tag marker) — everything else is allowed
 function validateInput(s) {
-  if (/[^a-zA-Z ]/.test(s))
-    throw new Error('Plaintext must contain only letters and spaces (no digits or symbols).');
+  if (/[~@]/.test(s))
+    throw new Error('Characters ~ and @ are reserved by the cipher and cannot appear in plaintext.');
   if (!s.trim()) throw new Error('Please enter a message.');
 }
 
