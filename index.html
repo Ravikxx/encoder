@@ -6,289 +6,147 @@
   <title>Trilayer Chaos Cipher</title>
   <style>
     :root {
-      --bg: #0a0c10;
-      --surface: #111318;
-      --surface2: #181c24;
-      --border: #1e2433;
-      --accent: #00e5ff;
-      --accent2: #7c3aed;
-      --accent3: #f59e0b;
-      --green: #10b981;
-      --red: #ef4444;
-      --text: #e2e8f0;
-      --muted: #64748b;
-      --l1: #06b6d4;
-      --l2: #a855f7;
-      --l3: #f59e0b;
-      --l4: #22c55e;
-      --l5: #f43f5e;
+      --bg: #0a0c10; --surface: #111318; --surface2: #181c24;
+      --border: #1e2433; --accent: #00e5ff; --accent2: #7c3aed;
+      --accent3: #f59e0b; --green: #10b981; --red: #ef4444;
+      --text: #e2e8f0; --muted: #64748b;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Courier New', Courier, monospace;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 16px 60px;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; padding: 28px 16px 60px;
     }
 
-    header { text-align: center; margin-bottom: 28px; }
+    header { text-align: center; margin-bottom: 32px; }
     .header-badge {
       display: inline-block;
-      background: linear-gradient(135deg, #00e5ff18, #7c3aed18);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      padding: 3px 10px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
+      background: linear-gradient(135deg,#00e5ff14,#7c3aed14);
+      border: 1px solid var(--accent); color: var(--accent);
+      font-size: 0.62rem; letter-spacing: 0.22em;
+      padding: 3px 10px; border-radius: 4px;
+      text-transform: uppercase; margin-bottom: 10px;
     }
     h1 {
-      font-size: clamp(1.6rem, 5vw, 2.8rem);
-      font-weight: 900;
+      font-size: clamp(1.6rem,5vw,2.8rem); font-weight: 900;
       letter-spacing: 0.08em;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-transform: uppercase;
+      background: linear-gradient(90deg,var(--accent),var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; text-transform: uppercase;
     }
     .subtitle {
-      color: var(--muted);
-      font-size: 0.72rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      margin-top: 6px;
+      color: var(--muted); font-size: 0.7rem;
+      letter-spacing: 0.22em; text-transform: uppercase; margin-top: 6px;
     }
 
-    .layers-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .layer-chip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 7px 12px;
-      font-size: 0.7rem;
-    }
-    .layer-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .layer-chip span { color: var(--muted); }
-    .layer-chip strong { color: var(--text); font-size: 0.76rem; }
-
+    /* ── Tabs ── */
     .tabs {
-      display: flex;
-      gap: 4px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 4px;
-      margin-bottom: 24px;
-      width: 100%;
-      max-width: 700px;
+      display: flex; gap: 4px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 4px;
+      margin-bottom: 24px; width: 100%; max-width: 660px;
     }
     .tab-btn {
-      flex: 1;
-      padding: 10px 6px;
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      border-radius: 7px;
-      font-family: inherit;
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      transition: all .2s;
+      flex: 1; padding: 11px 6px;
+      background: transparent; border: none;
+      color: var(--muted); cursor: pointer; border-radius: 7px;
+      font-family: inherit; font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase; transition: all .2s;
     }
     .tab-btn:hover { color: var(--text); background: var(--surface2); }
     .tab-btn.active { background: var(--surface2); color: var(--accent); border: 1px solid var(--border); }
 
-    .panel { width: 100%; max-width: 700px; display: none; }
+    /* ── Panels ── */
+    .panel { width: 100%; max-width: 660px; display: none; }
     .panel.active { display: block; }
 
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px; margin-bottom: 16px;
     }
     .card-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
+      font-size: 0.63rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 9px;
     }
 
     textarea {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-family: inherit;
-      font-size: 0.9rem;
-      padding: 12px;
-      resize: vertical;
-      min-height: 90px;
-      outline: none;
-      transition: border-color .2s;
-      line-height: 1.5;
+      width: 100%; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-family: inherit;
+      font-size: 0.9rem; padding: 12px; resize: vertical; min-height: 96px;
+      outline: none; transition: border-color .2s; line-height: 1.55;
     }
     textarea:focus { border-color: var(--accent); }
     textarea::placeholder { color: var(--muted); }
 
-    .btn-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-    .btn {
-      padding: 10px 24px;
-      border: none;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all .2s;
-      font-weight: 700;
+    /* ── PIN input ── */
+    .pin-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-top: 14px; flex-wrap: wrap;
     }
-    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #000; }
+    .pin-label { font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .pin-input {
+      width: 150px; background: var(--bg);
+      border: 1px solid var(--accent2);
+      border-radius: 8px; color: var(--accent2);
+      font-family: inherit; font-size: 1.05rem; font-weight: 700;
+      padding: 9px 14px; letter-spacing: 0.18em;
+      text-align: center; outline: none; transition: border-color .2s;
+    }
+    .pin-input:focus { border-color: var(--accent); }
+    .pin-input::placeholder { color: var(--muted); letter-spacing: 0; font-size: 0.75rem; font-weight: 400; }
+    .pin-note { font-size: 0.65rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── Buttons ── */
+    .btn-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .btn {
+      padding: 10px 26px; border: none; border-radius: 8px;
+      font-family: inherit; font-size: 0.8rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: all .2s; font-weight: 700;
+    }
+    .btn-primary { background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #000; }
     .btn-primary:hover { opacity: .85; transform: translateY(-1px); }
     .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
     .btn-ghost:hover { border-color: var(--muted); color: var(--text); }
-    .btn-copy {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 6px 14px;
-      font-size: 0.7rem;
+    .btn-sm {
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); padding: 5px 13px; font-size: 0.68rem;
     }
-    .btn-copy:hover { color: var(--accent); border-color: var(--accent); }
-    .btn-copy.copied { color: var(--green); border-color: var(--green); }
+    .btn-sm:hover { color: var(--accent); border-color: var(--accent); }
+    .btn-sm.copied { color: var(--green); border-color: var(--green); }
 
+    /* ── Result box ── */
     .result-box {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px;
-      margin-top: 12px;
-      display: none;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 16px; margin-top: 14px; display: none;
     }
     .result-box.visible { display: block; }
-    .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .result-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
-    .result-text { font-size: 0.88rem; color: var(--accent); word-break: break-all; line-height: 1.6; }
-    .result-text.decoded { color: var(--green); }
+    .result-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .result-label { font-size: 0.63rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+    .result-text { font-size: 0.87rem; color: var(--accent); word-break: break-all; line-height: 1.65; }
+    .result-text.plain { color: var(--green); }
+
+    /* ── PIN display (in encode result) ── */
+    .pin-result-block {
+      margin-top: 16px; padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .pin-result-row { display: flex; align-items: center; gap: 14px; margin-top: 8px; flex-wrap: wrap; }
+    .pin-display {
+      font-size: 1.8rem; font-weight: 900;
+      letter-spacing: 0.28em; color: var(--accent3);
+    }
+    .pin-warning {
+      font-size: 0.68rem; color: var(--muted);
+      line-height: 1.6; max-width: 340px;
+    }
+    .pin-warning strong { color: var(--accent3); }
+
     .error-text { color: var(--red); font-size: 0.82rem; margin-top: 10px; }
 
-    .hint-step {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-    .hint-step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .step-badge {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
-    }
-    .step-title { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
-    .step-desc { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-
-    .token-grid { display: flex; flex-direction: column; gap: 6px; }
-    .token-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; flex-wrap: wrap; }
-    .token-idx { color: var(--muted); font-size: 0.7rem; width: 20px; flex-shrink: 0; }
-    .token-val {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 4px 10px;
-      color: var(--text);
-      word-break: break-all;
-    }
-    .token-val.l1c { border-color: var(--l1); color: var(--l1); }
-    .token-val.l2c { border-color: var(--l2); color: var(--l2); }
-    .token-val.l3c { border-color: var(--l3); color: var(--l3); }
-    .token-val.l4c { border-color: var(--l4); color: var(--l4); }
-    .token-val.l5c { border-color: var(--l5); color: var(--l5); }
-    .token-arrow { color: var(--muted); font-size: 0.75rem; }
-    .shift-badge {
-      font-size: 0.62rem;
-      background: var(--accent2);
-      color: #fff;
-      border-radius: 4px;
-      padding: 2px 6px;
-      opacity: .85;
-    }
-
-    .full-string-box {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 12px;
-      font-size: 0.8rem;
-      word-break: break-all;
-      line-height: 1.7;
-    }
-    .final-output {
-      background: var(--bg);
-      border: 1px solid var(--accent);
-      border-radius: 8px;
-      padding: 14px;
-      font-size: 0.82rem;
-      color: var(--accent);
-      word-break: break-all;
-      margin-top: 8px;
-      text-align: center;
-    }
-    .grid-info {
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .grid-info span { color: var(--accent3); }
-
-    .prompt-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-    .prompt-card h3 {
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent3);
-      margin-bottom: 8px;
-    }
-    .prompt-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
-    .prompt-card code {
-      background: var(--surface2);
-      border-radius: 4px;
-      padding: 2px 6px;
-      color: var(--text);
-      font-size: 0.78rem;
-    }
-
-    .sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -297,493 +155,448 @@
 <body>
 
 <header>
-  <div class="header-badge">&#x25C6; Cryptographic Engine v3.0 &#x25C6;</div>
+  <div class="header-badge">&#x25C6; Classified &#x25C6;</div>
   <h1>Trilayer Chaos</h1>
-  <div class="subtitle">5-Layer Cipher &nbsp;·&nbsp; Encode / Decode / Trace</div>
+  <div class="subtitle">Cipher &nbsp;&#x2014;&nbsp; PIN-locked per message</div>
 </header>
-
-<div class="layers-row">
-  <div class="layer-chip">
-    <div class="layer-dot" style="background:var(--l1)"></div>
-    <div><strong>L1</strong><br><span>Reverse + Blind Tag</span></div>
-  </div>
-  <div class="layer-chip">
-    <div class="layer-dot" style="background:var(--l2)"></div>
-    <div><strong>L2</strong><br><span>Fibonacci Caesar</span></div>
-  </div>
-  <div class="layer-chip">
-    <div class="layer-dot" style="background:var(--l3)"></div>
-    <div><strong>L3</strong><br><span>Pair Swap</span></div>
-  </div>
-  <div class="layer-chip">
-    <div class="layer-dot" style="background:var(--l4)"></div>
-    <div><strong>L4</strong><br><span>Vigenere Pass</span></div>
-  </div>
-  <div class="layer-chip" style="border-color: var(--l5)44">
-    <div class="layer-dot" style="background:var(--l5)"></div>
-    <div><strong>L5</strong><br><span style="color:var(--l5);opacity:.8">Columnar Transpose</span></div>
-  </div>
-</div>
 
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('encode', this)">&#x2191; Encode</button>
   <button class="tab-btn" onclick="switchTab('decode', this)">&#x2193; Decode</button>
-  <button class="tab-btn" onclick="switchTab('hints', this)">&#x25D1; Trace</button>
 </div>
 
-<!-- ENCODE -->
+<!-- ════ ENCODE ════ -->
 <div id="panel-encode" class="panel active">
   <div class="card">
-    <div class="card-label">Plaintext (letters, spaces, punctuation — no ~ or @)</div>
-    <textarea id="encode-input" placeholder="Type your message here… e.g. Hello world! What now?" rows="4"></textarea>
+    <div class="card-label">Plaintext &mdash; letters, spaces &amp; punctuation (no ~ or @)</div>
+    <textarea id="enc-input" placeholder="Type your message here…" rows="4"></textarea>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="runEncode()">Encode &rarr;</button>
-      <button class="btn btn-ghost" onclick="clearPanel('encode')">Clear</button>
+      <button class="btn btn-ghost" onclick="clearEnc()">Clear</button>
     </div>
-    <div id="encode-result" class="result-box">
-      <div class="result-header">
+
+    <div id="enc-result" class="result-box">
+      <div class="result-row">
         <span class="result-label">Ciphertext</span>
-        <button class="btn btn-copy" id="copy-enc-btn" onclick="copyResult('encode-output','copy-enc-btn')">Copy</button>
+        <button class="btn btn-sm" id="cp-enc" onclick="copyEl('enc-output','cp-enc','Copy')">Copy</button>
       </div>
-      <div id="encode-output" class="result-text"></div>
+      <div id="enc-output" class="result-text"></div>
+
+      <div class="pin-result-block">
+        <div class="result-label">&#x1F512; Decode PIN &mdash; required to decrypt</div>
+        <div class="pin-result-row">
+          <div id="enc-pin" class="pin-display"></div>
+          <button class="btn btn-sm" id="cp-pin" onclick="copyEl('enc-pin','cp-pin','Copy PIN')">Copy PIN</button>
+        </div>
+        <div class="pin-warning">
+          <strong>Share both the ciphertext and PIN.</strong> Without the exact PIN this message cannot be decoded &mdash; a wrong PIN silently produces garbage.
+        </div>
+      </div>
     </div>
-    <div id="encode-error" class="error-text"></div>
+    <div id="enc-error" class="error-text"></div>
   </div>
 </div>
 
-<!-- DECODE -->
+<!-- ════ DECODE ════ -->
 <div id="panel-decode" class="panel">
   <div class="card">
     <div class="card-label">Ciphertext</div>
-    <textarea id="decode-input" placeholder="Paste ciphertext here, wrapped in << >>" rows="4"></textarea>
+    <textarea id="dec-input" placeholder="Paste ciphertext here, wrapped in &lt;&lt; &gt;&gt;" rows="4"></textarea>
+
+    <div class="pin-row">
+      <span class="pin-label">&#x1F512; PIN</span>
+      <input class="pin-input" id="dec-pin" type="text" maxlength="20"
+             placeholder="Enter PIN" autocomplete="off" spellcheck="false" />
+      <span class="pin-note">Wrong PIN = silent garbage &mdash; no error shown</span>
+    </div>
+
     <div class="btn-row">
       <button class="btn btn-primary" onclick="runDecode()">Decode &rarr;</button>
-      <button class="btn btn-ghost" onclick="clearPanel('decode')">Clear</button>
+      <button class="btn btn-ghost" onclick="clearDec()">Clear</button>
     </div>
-    <div id="decode-result" class="result-box">
-      <div class="result-header">
+
+    <div id="dec-result" class="result-box">
+      <div class="result-row">
         <span class="result-label">Plaintext</span>
-        <button class="btn btn-copy" id="copy-dec-btn" onclick="copyResult('decode-output','copy-dec-btn')">Copy</button>
+        <button class="btn btn-sm" id="cp-dec" onclick="copyEl('dec-output','cp-dec','Copy')">Copy</button>
       </div>
-      <div id="decode-output" class="result-text decoded"></div>
+      <div id="dec-output" class="result-text plain"></div>
     </div>
-    <div id="decode-error" class="error-text"></div>
-  </div>
-</div>
-
-<!-- HINTS / TRACE -->
-<div id="panel-hints" class="panel">
-  <div class="card">
-    <div class="card-label">Plaintext to trace</div>
-    <textarea id="hints-input" placeholder="Type a message to trace all 5 layers…" rows="3"></textarea>
-    <div class="btn-row">
-      <button class="btn btn-primary" onclick="runHints()">Generate Trace &rarr;</button>
-      <button class="btn btn-ghost" onclick="clearPanel('hints')">Clear</button>
-    </div>
-  </div>
-
-  <div id="hints-output"></div>
-
-  <hr class="sep">
-
-  <div class="prompt-card">
-    <h3>&#x25B6; Why L5 is the hardest layer to break</h3>
-    <p>After tokens are built and joined, L5 lifts every letter out of its token, rearranges them all in a <code>ceil(√L) × rows</code> grid read by column, then puts them back. The <code>~~</code> separators and <code>@</code> tag markers are frozen in place while all letters around them shift — so in the ciphertext, the 2 letters after every <code>@</code> are <em>not</em> the real tag letters, and the letters inside each apparent token span come from multiple different original tokens.</p>
-  </div>
-  <div class="prompt-card">
-    <h3>&#x25B6; Why the tag is hard to find</h3>
-    <p>The length tag is encoded as two letters using a fixed scrambled formula (<code>n×7+5 mod 26</code>), not as a plain number. Combined with L5 scattering those letters to random positions, an attacker can't determine word lengths even if they know the tag format.</p>
-  </div>
-  <div class="prompt-card">
-    <h3>&#x25B6; Layer stack</h3>
-    <p>
-      <strong>Encode:</strong> L1 → L2 → L3 → L4, then assemble, then L5<br>
-      <strong>Decode:</strong> un-L5, split, then un-L4 → L3 → un-L2 → un-L1 per token<br>
-      L3 is self-inverse. L5 is undone by reversing the column-read permutation.
-    </p>
+    <div id="dec-error" class="error-text"></div>
   </div>
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-//  CONSTANTS
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+//  PRNG + PIN KEY SCHEDULE
+//  Everything — substitution, shifts, Vigenere, rail
+//  counts, separator — is derived from the PIN.
+//  Wrong PIN → completely wrong key material → garbage.
+// ═══════════════════════════════════════════════════════
 
-// L2: Fibonacci Caesar shifts — (fib(i) % 25) + 1, giving range 1-25
-const FIB_SHIFTS = (() => {
-  const f = [1, 1];
-  while (f.length < 64) f.push(f[f.length - 2] + f[f.length - 1]);
-  return f.map(n => (n % 25) + 1);
-})();
-
-// L4: Fixed 64-value Vigenere key — derived from the Euler prime polynomial i²+i+41 mod 26,
-// interleaved with its reversal to break the near-symmetry
-const _euler = Array.from({length: 64}, (_, i) => (i * i + i + 41) % 26);
-const VIGENERE_KEY = _euler.map((v, i) => (v + _euler[63 - i] * 3 + i * 7) % 26);
-
-// Token separator — two chars that can't appear in encoded token bodies (all letters + @)
-const SEP = '~~';
-
-// ─────────────────────────────────────────────
-//  HELPERS
-// ─────────────────────────────────────────────
-
-const isLetter = ch => /[a-zA-Z]/.test(ch);
-
-function shiftLetter(ch, n) {
-  if (!isLetter(ch)) return ch;
-  const base = ch >= 'a' && ch <= 'z' ? 97 : 65;
-  return String.fromCharCode(((ch.charCodeAt(0) - base + ((n % 26 + 26) % 26)) % 26) + base);
+function fnv32(s) {
+  let h = 0x811c9dc5 >>> 0;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h;
 }
 
-// Tag is always the last 3 chars of a token: @XY
-const bodyOf = t => t.slice(0, -3);
+function makePRNG(seed) {
+  let s = (seed >>> 0) || 1;
+  return () => { s ^= s<<13; s ^= s>>>17; s ^= s<<5; return (s>>>0)/4294967296; };
+}
+
+function shuffled(rng) {
+  const a = Array.from({length:26},(_,i)=>i);
+  for (let i=25; i>0; i--) {
+    const j = Math.floor(rng()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function pinSchedule(pin) {
+  if (!pin || !pin.trim()) throw new Error('PIN is required to decode.');
+  const h = fnv32('\x01TC' + pin + '\x02' + pin.length);
+
+  // L0 — monoalphabetic substitution (full alphabet shuffle)
+  const fwd = shuffled(makePRNG(fnv32(h + 0xAA)));
+  const rev = new Array(26);
+  fwd.forEach((v,i) => rev[v] = i);
+
+  // L2 — 64 Caesar shifts (1–25)
+  const shRng = makePRNG(fnv32(h + 0xBB));
+  const shifts = Array.from({length:64}, () => 1 + Math.floor(shRng()*25));
+
+  // L4 — 64-value Vigenere key (0–25)
+  const vRng = makePRNG(fnv32(h + 0xCC));
+  const vKey = Array.from({length:64}, () => Math.floor(vRng()*26));
+
+  // L5 — rail counts per token (2–4)
+  const rRng = makePRNG(fnv32(h + 0xDD));
+  const railCounts = Array.from({length:64}, () => 2 + Math.floor(rRng()*3));
+
+  // Separator — 3 digits derived from PIN (never appears in letter-only token bodies)
+  const sRng = makePRNG(fnv32(h + 0xEE));
+  const sep = [0,1,2].map(() => String.fromCharCode(48 + Math.floor(sRng()*10))).join('');
+
+  return { fwd, rev, shifts, vKey, railCounts, sep };
+}
+
+// ═══════════════════════════════════════════════════════
+//  SPECIAL CHAR ENCODING  (SC — PIN-independent)
+//  'j' is the escape prefix: j→jj, !→ja, ?→jb, .→jc …
+//  Special chars become letter pairs, go through all layers.
+// ═══════════════════════════════════════════════════════
+
+const J_MAP = {
+  'j':'j','!':'a','?':'b','.':'c',',':'d',"'":'e','-':'f',
+  ';':'g',':':'h','"':'i','(':'k',')':'l',
+  '0':'m','1':'n','2':'o','3':'p','4':'q','5':'r',
+  '6':'s','7':'t','8':'u','9':'v','#':'w','$':'x','%':'y','&':'z',
+};
+const J_REV = Object.fromEntries(Object.entries(J_MAP).map(([k,v])=>[v,k]));
+
+function scEncode(word) {
+  let out = '';
+  for (const ch of word) out += ch in J_MAP ? 'j' + J_MAP[ch] : ch;
+  return out;
+}
+function scDecode(word) {
+  let out = '', i = 0;
+  while (i < word.length) {
+    if (word[i]==='j' && i+1<word.length && word[i+1] in J_REV) { out += J_REV[word[i+1]]; i+=2; }
+    else out += word[i++];
+  }
+  return out;
+}
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+
+const isLetter = c => /[a-zA-Z]/.test(c);
+
+function shiftLetter(c, n) {
+  if (!isLetter(c)) return c;
+  const base = c>='a'&&c<='z' ? 97 : 65;
+  return String.fromCharCode(((c.charCodeAt(0)-base+((n%26+26)%26))%26)+base);
+}
+
+const bodyOf = t => t.slice(0,-3);
 const tagOf  = t => t.slice(-3);
 
-// ─────────────────────────────────────────────
-//  L1 — REVERSE + BLIND TAG
-//  Encodes length n as two letters: @XY
-//  Formula: lo = (n*7+5)%26, hi = floor(n/26)%26
-//  Inverse: modular inverse of 7 mod 26 is 15 (7×15=105≡1 mod 26)
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+//  L0 — PIN-KEYED MONOALPHABETIC SUBSTITUTION
+// ═══════════════════════════════════════════════════════
 
-function encodeLen(n) {
-  return String.fromCharCode((n * 7 + 5) % 26 + 97) +
-         String.fromCharCode(Math.floor(n / 26) % 26 + 97);
+function l0Apply(word, table) {
+  return [...word].map(c => {
+    if (!isLetter(c)) return c;
+    const base = c>='a'&&c<='z' ? 97 : 65;
+    return String.fromCharCode(table[c.charCodeAt(0)-base] + base);
+  }).join('');
 }
 
+// ═══════════════════════════════════════════════════════
+//  L1 — REVERSE + BLIND TAG
+//  Length n encoded as @XY: lo=(n×7+5)%26, hi=n÷26 %26
+// ═══════════════════════════════════════════════════════
+
+function encodeLen(n) {
+  return String.fromCharCode((n*7+5)%26+97) + String.fromCharCode(Math.floor(n/26)%26+97);
+}
 function l1Encode(word) {
   return word.split('').reverse().join('') + '@' + encodeLen(word.length);
 }
-
 function l1Decode(token) {
   return bodyOf(token).split('').reverse().join('');
 }
 
-// ─────────────────────────────────────────────
-//  L2 — FIBONACCI CAESAR
-//  Token i shifted by FIB_SHIFTS[i%64] — non-linear, non-sequential
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+//  L2 — PIN-SEEDED CAESAR (non-linear, per token)
+// ═══════════════════════════════════════════════════════
 
-function l2Encode(token, i) {
-  const s = FIB_SHIFTS[i % 64];
-  return bodyOf(token).split('').map(c => shiftLetter(c, s)).join('') + tagOf(token);
+function l2Encode(token, i, sch) {
+  const s = sch.shifts[i%64];
+  return bodyOf(token).split('').map(c=>shiftLetter(c,s)).join('') + tagOf(token);
+}
+function l2Decode(token, i, sch) {
+  const s = sch.shifts[i%64];
+  return bodyOf(token).split('').map(c=>shiftLetter(c,-s)).join('') + tagOf(token);
 }
 
-function l2Decode(token, i) {
-  const s = FIB_SHIFTS[i % 64];
-  return bodyOf(token).split('').map(c => shiftLetter(c, -s)).join('') + tagOf(token);
-}
-
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 //  L3 — ADJACENT LETTER PAIR SWAP (self-inverse)
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 
 function l3Apply(token) {
   const body = bodyOf(token);
   const lpos = [];
-  for (let i = 0; i < body.length; i++) if (isLetter(body[i])) lpos.push(i);
+  for (let i=0;i<body.length;i++) if(isLetter(body[i])) lpos.push(i);
   const ch = body.split('');
-  for (let i = 0; i + 1 < lpos.length; i += 2)
-    [ch[lpos[i]], ch[lpos[i + 1]]] = [ch[lpos[i + 1]], ch[lpos[i]]];
+  for (let i=0;i+1<lpos.length;i+=2) [ch[lpos[i]],ch[lpos[i+1]]]=[ch[lpos[i+1]],ch[lpos[i]]];
   return ch.join('') + tagOf(token);
 }
 
-// ─────────────────────────────────────────────
-//  L4 — VIGENERE (fixed Euler-derived key)
-//  Each token starts at a different key offset: i*7 % 64
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+//  L4 — PIN-KEYED VIGENERE
+// ═══════════════════════════════════════════════════════
 
-function l4Apply(token, i, sign) {
+function l4Apply(token, i, sign, sch) {
   const body = bodyOf(token);
   let lc = 0;
   const result = body.split('').map(c => {
     if (!isLetter(c)) return c;
-    return shiftLetter(c, sign * VIGENERE_KEY[(i * 7 + lc++) % 64]);
+    return shiftLetter(c, sign * sch.vKey[(i*7+lc++)%64]);
   }).join('');
   return result + tagOf(token);
 }
 
-// ─────────────────────────────────────────────
-//  L5 — COLUMNAR TRANSPOSITION (new outermost layer)
-//
-//  All letters in the assembled inner string are lifted out, arranged
-//  into a ceil(√L) × rows grid filled row-major, then read column-major.
-//  Non-letters (@, ~, digits) stay frozen in their original positions.
-//
-//  Effect: letters from different tokens are scattered across token spans.
-//  The @-tag markers remain visible but the 2 letters after each @ are
-//  NOT their original tag letters — they've been moved elsewhere.
-//
-//  Self-undoable: decode reverses the column-read permutation exactly.
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+//  L5 — RAIL FENCE (per-token, PIN-seeded rail count)
+// ═══════════════════════════════════════════════════════
+
+function railFence(letters, rails, decode) {
+  const L = letters.length;
+  if (L<2 || rails>=L) return letters.slice();
+  const assign=[];
+  let r=0, dir=1;
+  for (let i=0;i<L;i++) {
+    assign.push(r);
+    if(r===0) dir=1; else if(r===rails-1) dir=-1;
+    r+=dir;
+  }
+  if (!decode) {
+    const rows=Array.from({length:rails},()=>[]);
+    for(let i=0;i<L;i++) rows[assign[i]].push(letters[i]);
+    return rows.flat();
+  } else {
+    const sizes=Array(rails).fill(0);
+    for(let i=0;i<L;i++) sizes[assign[i]]++;
+    const rows=[]; let p=0;
+    for(let row=0;row<rails;row++){rows.push(letters.slice(p,p+sizes[row]));p+=sizes[row];}
+    const result=new Array(L), idx=Array(rails).fill(0);
+    for(let i=0;i<L;i++) result[i]=rows[assign[i]][idx[assign[i]]++];
+    return result;
+  }
+}
+
+function l5Apply(token, i, decode, sch) {
+  const body = bodyOf(token);
+  const lpos=[], letts=[];
+  for(let k=0;k<body.length;k++) if(isLetter(body[k])){lpos.push(k);letts.push(body[k]);}
+  if(lpos.length<2) return token;
+  const result = railFence(letts, sch.railCounts[i%64], decode);
+  const ch = body.split('');
+  for(let k=0;k<lpos.length;k++) ch[lpos[k]]=result[k];
+  return ch.join('') + tagOf(token);
+}
+
+// ═══════════════════════════════════════════════════════
+//  L6 — COLUMNAR TRANSPOSITION (cross-token, outermost)
+//  All letters in the assembled string rearranged into a
+//  ceil(√L)×rows grid read column-major. ~~, @, digits stay.
+// ═══════════════════════════════════════════════════════
 
 function colTranspose(str, decode) {
-  // Collect letter positions
-  const pos = [], letts = [];
-  for (let i = 0; i < str.length; i++) {
-    if (isLetter(str[i])) { pos.push(i); letts.push(str[i]); }
+  const pos=[], letts=[];
+  for(let i=0;i<str.length;i++) if(isLetter(str[i])){pos.push(i);letts.push(str[i]);}
+  const L=letts.length;
+  if(L<2) return str;
+  const cols=Math.ceil(Math.sqrt(L));
+  const rows=Math.ceil(L/cols);
+  const full=L%cols===0?cols:L%cols;
+  const orig=[];
+  for(let c=0;c<cols;c++){
+    const rc=c<full?rows:rows-1;
+    for(let row=0;row<rc;row++) orig.push(row*cols+c);
   }
-  const L = letts.length;
-  if (L < 2) return str;
-
-  const cols = Math.ceil(Math.sqrt(L));
-  const rows = Math.ceil(L / cols);
-  // Number of columns that have a full `rows` count (vs rows-1)
-  const fullCols = L % cols === 0 ? cols : L % cols;
-
-  // Build the column-major read order: orig[k] = row-major index that
-  // position k in the column-major stream came from.
-  const orig = new Array(L);
-  let k = 0;
-  for (let c = 0; c < cols; c++) {
-    const rCount = c < fullCols ? rows : rows - 1;
-    for (let r = 0; r < rCount; r++) orig[k++] = r * cols + c;
-  }
-
   let result;
-  if (!decode) {
-    // Encode: scatter — output[k] = letts[orig[k]]
-    result = orig.map(idx => letts[idx]);
+  if(!decode){
+    result=orig.map(idx=>letts[idx]);
   } else {
-    // Decode: gather — restored[orig[k]] = letts[k]
-    const restored = new Array(L);
-    for (let i = 0; i < L; i++) restored[orig[i]] = letts[i];
-    result = restored;
+    const restored=new Array(L);
+    for(let i=0;i<L;i++) restored[orig[i]]=letts[i];
+    result=restored;
   }
-
-  const ch = str.split('');
-  for (let i = 0; i < pos.length; i++) ch[pos[i]] = result[i];
+  const ch=str.split('');
+  for(let i=0;i<pos.length;i++) ch[pos[i]]=result[i];
   return ch.join('');
 }
 
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 //  FULL ENCODE / DECODE
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 
-// Reserved: ~ (separator) and @ (tag marker) — everything else is allowed
 function validateInput(s) {
-  if (/[~@]/.test(s))
-    throw new Error('Characters ~ and @ are reserved by the cipher and cannot appear in plaintext.');
-  if (!s.trim()) throw new Error('Please enter a message.');
+  if(/[~@]/.test(s)) throw new Error('Characters ~ and @ are reserved by the cipher.');
+  if(!s.trim()) throw new Error('Enter a message to encode.');
 }
 
-function encode(plaintext) {
+function encode(plaintext, pin) {
   validateInput(plaintext);
+  const sch = pinSchedule(pin);
   const tokens = plaintext.split(' ').map((word, i) => {
-    let t = l1Encode(word);
-    t = l2Encode(t, i);
+    let w = l0Apply(scEncode(word), sch.fwd);   // SC then PIN-sub
+    let t = l1Encode(w);
+    t = l2Encode(t, i, sch);
     t = l3Apply(t);
-    t = l4Apply(t, i, 1);
+    t = l4Apply(t, i, 1, sch);
+    t = l5Apply(t, i, false, sch);
     return t;
   });
-  return '<<' + colTranspose(tokens.join(SEP), false) + '>>';
+  return '<<' + colTranspose(tokens.join(sch.sep), false) + '>>';
 }
 
-function decode(ciphertext) {
+function decode(ciphertext, pin) {
+  const sch = pinSchedule(pin);
   const s = ciphertext.trim();
-  if (!s.startsWith('<<') || !s.endsWith('>>'))
-    throw new Error('Invalid format — ciphertext must be wrapped in << >>');
-  const inner = colTranspose(s.slice(2, -2), true);
-  if (!inner) throw new Error('Empty ciphertext');
-  return inner.split(SEP).map((token, i) => {
-    if (token.length < 3) throw new Error(`Token ${i + 1} is malformed`);
-    let t = l4Apply(token, i, -1);
+  if(!s.startsWith('<<')||!s.endsWith('>>'))
+    throw new Error('Ciphertext must be wrapped in << >>');
+  const inner = colTranspose(s.slice(2,-2), true);
+  if(!inner) throw new Error('Empty ciphertext');
+  return inner.split(sch.sep).map((token, i) => {
+    if(token.length<3) throw new Error(`Token ${i+1} malformed — wrong PIN or corrupted ciphertext`);
+    let t = l5Apply(token, i, true, sch);
+    t = l4Apply(t, i, -1, sch);
     t = l3Apply(t);
-    t = l2Decode(t, i);
-    return l1Decode(t);
+    t = l2Decode(t, i, sch);
+    let w = l1Decode(t);
+    return scDecode(l0Apply(w, sch.rev));        // un-sub then SC-decode
   }).join(' ');
 }
 
-// ─────────────────────────────────────────────
-//  HINT TRACE
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+//  PIN GENERATION
+// ═══════════════════════════════════════════════════════
 
-function buildHints(plaintext) {
-  validateInput(plaintext);
-  const words = plaintext.split(' ');
-
-  const s1 = words.map(w => l1Encode(w));
-  const s2 = s1.map((t, i) => l2Encode(t, i));
-  const s3 = s2.map(l3Apply);
-  const s4 = s3.map((t, i) => l4Apply(t, i, 1));
-  const assembled = s4.join(SEP);
-  const s5 = colTranspose(assembled, false);
-  const final = '<<' + s5 + '>>';
-
-  // Count letters for the grid info
-  const L = (assembled.match(/[a-zA-Z]/g) || []).length;
-  const cols = Math.ceil(Math.sqrt(L));
-  const rows = Math.ceil(L / cols);
-
-  let html = '';
-
-  html += makeStep('0', '#64748b', 'Original Words', 'Space-separated input tokens',
-    words.map((w, i) => tok(i, '', w, '')).join(''));
-
-  html += makeStep('L1', 'var(--l1)', 'Reverse + Blind Tag',
-    'Reversed body; length encoded as @XY using fixed formula n×7+5 mod 26 (hides word lengths)',
-    words.map((w, i) => tok(i, w, s1[i], 'l1c')).join(''));
-
-  html += makeStep('L2', 'var(--l2)', 'Fibonacci Caesar',
-    'Letters shifted by Fibonacci sequence mod 25 + 1 — non-linear, non-sequential',
-    s1.map((t, i) => tok(i, t, s2[i], 'l2c', `fib+${FIB_SHIFTS[i % 64]}`)).join(''));
-
-  html += makeStep('L3', 'var(--l3)', 'Adjacent Pair Swap',
-    'Letter positions swapped in pairs (0↔1, 2↔3…) — self-inverse',
-    s2.map((t, i) => tok(i, t, s3[i], 'l3c')).join(''));
-
-  html += makeStep('L4', 'var(--l4)', 'Vigenere Pass',
-    'Each token\'s letters shifted by a fixed Euler-polynomial key — unique offset per token',
-    s3.map((t, i) => tok(i, t, s4[i], 'l4c', `v@${(i * 7) % 64}`)).join(''));
-
-  // L5 — show the assembled string before and after transposition
-  html += `<div class="hint-step">
-    <div class="hint-step-header">
-      <div class="step-badge" style="background:var(--l5)22;border:1px solid var(--l5);color:var(--l5)">L5</div>
-      <div>
-        <div class="step-title" style="color:var(--l5)">Columnar Transposition</div>
-        <div class="step-desc">All letters in the joined string are rearranged via column-major grid read — crosses token boundaries</div>
-      </div>
-    </div>
-    <div class="grid-info">
-      Letter count <span>L = ${L}</span> &nbsp;·&nbsp;
-      Grid <span>${cols} cols × ${rows} rows</span> &nbsp;·&nbsp;
-      Non-letters (<code style="color:var(--muted)">~~</code>, <code style="color:var(--muted)">@</code>) frozen in place
-    </div>
-    <div style="margin-bottom:8px">
-      <div class="card-label" style="margin-bottom:4px">Before (joined tokens)</div>
-      <div class="full-string-box" style="color:var(--l4)">${esc(assembled)}</div>
-    </div>
-    <div>
-      <div class="card-label" style="margin-bottom:4px">After (letters transposed &mdash; note: letters after each @ are now from other tokens)</div>
-      <div class="full-string-box" style="color:var(--l5)">${esc(s5)}</div>
-    </div>
-  </div>`;
-
-  html += `<div class="hint-step">
-    <div class="hint-step-header">
-      <div class="step-badge" style="background:#00e5ff22;border:1px solid var(--accent);color:var(--accent)">&sum;</div>
-      <div>
-        <div class="step-title" style="color:var(--accent)">Final Ciphertext</div>
-        <div class="step-desc">Wrapped in &lt;&lt; &gt;&gt;</div>
-      </div>
-    </div>
-    <div class="final-output">${esc(final)}</div>
-  </div>`;
-
-  return html;
+function generatePIN() {
+  // 8-char alphanumeric PIN (uppercase) — 36^8 ≈ 2.8 trillion combinations
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no O,0,I,1 (ambiguous)
+  return Array.from({length:8}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
 }
 
-function tok(i, from, to, cls, badge) {
-  return `<div class="token-row">
-    <span class="token-idx">${i + 1}.</span>
-    ${from ? `<span class="token-val">${esc(from)}</span><span class="token-arrow">&#x2192;</span>` : ''}
-    <span class="token-val ${cls}">${esc(to)}</span>
-    ${badge ? `<span class="shift-badge">${esc(badge)}</span>` : ''}
-  </div>`;
-}
-
-function makeStep(label, color, title, desc, body) {
-  return `<div class="hint-step">
-    <div class="hint-step-header">
-      <div class="step-badge" style="background:${color}22;border:1px solid ${color};color:${color}">${label}</div>
-      <div>
-        <div class="step-title" style="color:${color}">${title}</div>
-        <div class="step-desc">${desc}</div>
-      </div>
-    </div>
-    <div class="token-grid">${body}</div>
-  </div>`;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 //  UI
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 
 function switchTab(name, btn) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
   btn.classList.add('active');
 }
 
 function runEncode() {
-  const errEl = document.getElementById('encode-error');
-  const resEl = document.getElementById('encode-result');
-  const outEl = document.getElementById('encode-output');
+  const errEl = document.getElementById('enc-error');
+  const resEl = document.getElementById('enc-result');
   errEl.textContent = '';
   try {
-    outEl.textContent = encode(document.getElementById('encode-input').value);
+    const plaintext = document.getElementById('enc-input').value;
+    const pin = generatePIN();
+    const cipher = encode(plaintext, pin);
+    document.getElementById('enc-output').textContent = cipher;
+    document.getElementById('enc-pin').textContent = pin;
     resEl.classList.add('visible');
-    resetCopy('copy-enc-btn');
-  } catch (e) {
+    resetBtn('cp-enc', 'Copy');
+    resetBtn('cp-pin', 'Copy PIN');
+  } catch(e) {
     errEl.textContent = e.message;
     resEl.classList.remove('visible');
   }
 }
 
 function runDecode() {
-  const errEl = document.getElementById('decode-error');
-  const resEl = document.getElementById('decode-result');
-  const outEl = document.getElementById('decode-output');
+  const errEl = document.getElementById('dec-error');
+  const resEl = document.getElementById('dec-result');
   errEl.textContent = '';
   try {
-    const input = document.getElementById('decode-input').value;
-    if (!input.trim()) throw new Error('Please paste ciphertext to decode.');
-    outEl.textContent = decode(input);
+    const ciphertext = document.getElementById('dec-input').value;
+    const pin = document.getElementById('dec-pin').value.trim();
+    if(!pin) throw new Error('Enter the PIN that was generated when this message was encoded.');
+    if(!ciphertext.trim()) throw new Error('Paste the ciphertext above.');
+    document.getElementById('dec-output').textContent = decode(ciphertext, pin);
     resEl.classList.add('visible');
-    resetCopy('copy-dec-btn');
-  } catch (e) {
+    resetBtn('cp-dec', 'Copy');
+  } catch(e) {
     errEl.textContent = e.message;
     resEl.classList.remove('visible');
   }
 }
 
-function runHints() {
-  const outEl = document.getElementById('hints-output');
-  try {
-    outEl.innerHTML = buildHints(document.getElementById('hints-input').value);
-  } catch (e) {
-    outEl.innerHTML = `<div class="error-text">${esc(e.message)}</div>`;
-  }
+function clearEnc() {
+  document.getElementById('enc-input').value = '';
+  document.getElementById('enc-result').classList.remove('visible');
+  document.getElementById('enc-error').textContent = '';
 }
 
-function clearPanel(name) {
-  const ids = {
-    encode: ['encode-input', 'encode-result', 'encode-error'],
-    decode: ['decode-input', 'decode-result', 'decode-error'],
-    hints:  ['hints-input',  'hints-output',  null],
-  }[name];
-  document.getElementById(ids[0]).value = '';
-  if (ids[1]) {
-    const el = document.getElementById(ids[1]);
-    el.classList ? el.classList.remove('visible') : (el.innerHTML = '');
-  }
-  if (ids[2]) document.getElementById(ids[2]).textContent = '';
+function clearDec() {
+  document.getElementById('dec-input').value = '';
+  document.getElementById('dec-pin').value = '';
+  document.getElementById('dec-result').classList.remove('visible');
+  document.getElementById('dec-error').textContent = '';
 }
 
-function copyResult(outputId, btnId) {
-  navigator.clipboard.writeText(document.getElementById(outputId).textContent).then(() => {
+function copyEl(id, btnId, label) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
     const btn = document.getElementById(btnId);
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+    setTimeout(() => { btn.textContent = label; btn.classList.remove('copied'); }, 1800);
   });
 }
 
-function resetCopy(id) {
+function resetBtn(id, label) {
   const btn = document.getElementById(id);
-  btn.textContent = 'Copy';
+  btn.textContent = label;
   btn.classList.remove('copied');
 }
 
-document.getElementById('encode-input').addEventListener('keydown', e => { if (e.ctrlKey && e.key === 'Enter') runEncode(); });
-document.getElementById('decode-input').addEventListener('keydown', e => { if (e.ctrlKey && e.key === 'Enter') runDecode(); });
+document.getElementById('enc-input').addEventListener('keydown', e => { if(e.ctrlKey&&e.key==='Enter') runEncode(); });
+document.getElementById('dec-input').addEventListener('keydown', e => { if(e.ctrlKey&&e.key==='Enter') runDecode(); });
 </script>
 </body>
 </html>
