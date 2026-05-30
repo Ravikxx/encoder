@@ -10,10 +10,10 @@
       --border: #1e2433; --accent: #00e5ff; --accent2: #7c3aed;
       --accent3: #f59e0b; --green: #10b981; --red: #ef4444;
       --text: #e2e8f0; --muted: #64748b;
+      --sc: #e879f9; --l1: #06b6d4; --l2: #a855f7;
+      --l3: #f59e0b; --l4: #22c55e; --l5: #f43f5e; --l6: #3b82f6;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Courier New', Courier, monospace;
       background: var(--bg); color: var(--text);
@@ -21,94 +21,133 @@
       align-items: center; padding: 28px 16px 60px;
     }
 
-    header { text-align: center; margin-bottom: 32px; }
+    /* ── Top-right lock button ── */
+    #lock-wrap {
+      position: fixed; top: 14px; right: 16px; z-index: 200;
+    }
+    .lock-btn {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--muted);
+      padding: 7px 13px; font-family: inherit;
+      font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+    }
+    .lock-btn:hover { border-color: var(--muted); color: var(--text); }
+    body.unlocked .lock-btn { color: var(--green); border-color: #10b98150; background: #10b9810d; }
+
+    /* ── PIN popover ── */
+    .pin-popover {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; width: 230px;
+      box-shadow: 0 8px 32px #00000060;
+    }
+    .pin-pop-label {
+      font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .pin-field {
+      width: 100%; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 7px; color: var(--text); font-family: inherit;
+      font-size: 1rem; padding: 9px 12px; letter-spacing: 0.15em;
+      outline: none; transition: border-color .2s; text-align: center;
+    }
+    .pin-field:focus { border-color: var(--accent); }
+    .pin-field.shake { animation: shake .35s ease; border-color: var(--red) !important; }
+    @keyframes shake {
+      0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)}
+      40%{transform:translateX(6px)} 60%{transform:translateX(-4px)}
+      80%{transform:translateX(4px)}
+    }
+    .pin-pop-err { color: var(--red); font-size: 0.7rem; margin-top: 6px; min-height: 16px; }
+    .pin-pop-btns { display: flex; gap: 7px; margin-top: 10px; }
+    .pin-pop-btns button {
+      flex: 1; padding: 8px; border: none; border-radius: 7px;
+      font-family: inherit; font-size: 0.72rem; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer; transition: all .2s;
+    }
+    .pin-pop-btns .btn-unlock { background: linear-gradient(135deg,var(--accent),var(--accent2)); color:#000; font-weight:700; }
+    .pin-pop-btns .btn-unlock:hover { opacity:.85; }
+    .pin-pop-btns .btn-cancel { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }
+    .pin-pop-btns .btn-cancel:hover { color: var(--text); }
+
+    /* ── Header ── */
+    header { text-align: center; margin-bottom: 28px; }
     .header-badge {
       display: inline-block;
       background: linear-gradient(135deg,#00e5ff14,#7c3aed14);
       border: 1px solid var(--accent); color: var(--accent);
-      font-size: 0.62rem; letter-spacing: 0.22em;
-      padding: 3px 10px; border-radius: 4px;
-      text-transform: uppercase; margin-bottom: 10px;
+      font-size: 0.62rem; letter-spacing: 0.22em; padding: 3px 10px;
+      border-radius: 4px; text-transform: uppercase; margin-bottom: 10px;
     }
     h1 {
-      font-size: clamp(1.6rem,5vw,2.8rem); font-weight: 900;
-      letter-spacing: 0.08em;
+      font-size: clamp(1.6rem,5vw,2.8rem); font-weight: 900; letter-spacing: 0.08em;
       background: linear-gradient(90deg,var(--accent),var(--accent2));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text; text-transform: uppercase;
     }
-    .subtitle {
-      color: var(--muted); font-size: 0.7rem;
-      letter-spacing: 0.22em; text-transform: uppercase; margin-top: 6px;
+    .subtitle { color: var(--muted); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; margin-top: 6px; }
+
+    /* ── Layer chips ── */
+    .layers-row {
+      display: flex; gap: 8px; margin-bottom: 28px;
+      flex-wrap: wrap; justify-content: center;
     }
+    .layer-chip {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 7px; padding: 7px 12px; font-size: 0.74rem; font-weight: 700;
+      color: var(--muted); transition: all .3s;
+    }
+    .layer-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    /* Descriptions hidden until unlocked */
+    .chip-desc { display: none; font-size: 0.58rem; color: var(--muted); font-weight: 400; margin-top: 1px; letter-spacing: 0; }
+    body.unlocked .chip-desc { display: block; }
+    body.unlocked .layer-chip { padding: 8px 12px; }
 
     /* ── Tabs ── */
     .tabs {
       display: flex; gap: 4px;
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 10px; padding: 4px;
-      margin-bottom: 24px; width: 100%; max-width: 660px;
+      margin-bottom: 24px; width: 100%; max-width: 680px;
     }
     .tab-btn {
-      flex: 1; padding: 11px 6px;
-      background: transparent; border: none;
+      flex: 1; padding: 10px 6px; background: transparent; border: none;
       color: var(--muted); cursor: pointer; border-radius: 7px;
-      font-family: inherit; font-size: 0.78rem;
-      letter-spacing: 0.1em; text-transform: uppercase; transition: all .2s;
+      font-family: inherit; font-size: 0.78rem; letter-spacing: 0.1em;
+      text-transform: uppercase; transition: all .2s;
     }
     .tab-btn:hover { color: var(--text); background: var(--surface2); }
     .tab-btn.active { background: var(--surface2); color: var(--accent); border: 1px solid var(--border); }
+    /* Trace tab hidden until unlocked */
+    #tab-trace { display: none; }
+    body.unlocked #tab-trace { display: block; }
 
     /* ── Panels ── */
-    .panel { width: 100%; max-width: 660px; display: none; }
+    .panel { width: 100%; max-width: 680px; display: none; }
     .panel.active { display: block; }
-
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 22px; margin-bottom: 16px;
-    }
-    .card-label {
-      font-size: 0.63rem; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 9px;
-    }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+    .card-label { font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 9px; }
 
     textarea {
       width: 100%; background: var(--surface2); border: 1px solid var(--border);
       border-radius: 8px; color: var(--text); font-family: inherit;
-      font-size: 0.9rem; padding: 12px; resize: vertical; min-height: 96px;
+      font-size: 0.9rem; padding: 12px; resize: vertical; min-height: 90px;
       outline: none; transition: border-color .2s; line-height: 1.55;
     }
     textarea:focus { border-color: var(--accent); }
     textarea::placeholder { color: var(--muted); }
 
-    /* ── PIN input ── */
-    .pin-row {
-      display: flex; align-items: center; gap: 12px;
-      margin-top: 14px; flex-wrap: wrap;
-    }
-    .pin-label { font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
-    .pin-input {
-      width: 150px; background: var(--bg);
-      border: 1px solid var(--accent2);
-      border-radius: 8px; color: var(--accent2);
-      font-family: inherit; font-size: 1.05rem; font-weight: 700;
-      padding: 9px 14px; letter-spacing: 0.18em;
-      text-align: center; outline: none; transition: border-color .2s;
-    }
-    .pin-input:focus { border-color: var(--accent); }
-    .pin-input::placeholder { color: var(--muted); letter-spacing: 0; font-size: 0.75rem; font-weight: 400; }
-    .pin-note { font-size: 0.65rem; color: var(--muted); line-height: 1.5; }
-
-    /* ── Buttons ── */
-    .btn-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .btn-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
     .btn {
-      padding: 10px 26px; border: none; border-radius: 8px;
-      font-family: inherit; font-size: 0.8rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      cursor: pointer; transition: all .2s; font-weight: 700;
+      padding: 10px 24px; border: none; border-radius: 8px;
+      font-family: inherit; font-size: 0.8rem; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer; transition: all .2s; font-weight: 700;
     }
-    .btn-primary { background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #000; }
-    .btn-primary:hover { opacity: .85; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg,var(--accent),var(--accent2)); color:#000; }
+    .btn-primary:hover { opacity:.85; transform: translateY(-1px); }
     .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
     .btn-ghost:hover { border-color: var(--muted); color: var(--text); }
     .btn-sm {
@@ -118,34 +157,40 @@
     .btn-sm:hover { color: var(--accent); border-color: var(--accent); }
     .btn-sm.copied { color: var(--green); border-color: var(--green); }
 
-    /* ── Result box ── */
     .result-box {
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; padding: 16px; margin-top: 14px; display: none;
+      border-radius: 8px; padding: 14px; margin-top: 12px; display: none;
     }
     .result-box.visible { display: block; }
-    .result-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
-    .result-label { font-size: 0.63rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+    .result-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .result-label { font-size: 0.63rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
     .result-text { font-size: 0.87rem; color: var(--accent); word-break: break-all; line-height: 1.65; }
     .result-text.plain { color: var(--green); }
-
-    /* ── PIN display (in encode result) ── */
-    .pin-result-block {
-      margin-top: 16px; padding-top: 14px;
-      border-top: 1px solid var(--border);
-    }
-    .pin-result-row { display: flex; align-items: center; gap: 14px; margin-top: 8px; flex-wrap: wrap; }
-    .pin-display {
-      font-size: 1.8rem; font-weight: 900;
-      letter-spacing: 0.28em; color: var(--accent3);
-    }
-    .pin-warning {
-      font-size: 0.68rem; color: var(--muted);
-      line-height: 1.6; max-width: 340px;
-    }
-    .pin-warning strong { color: var(--accent3); }
-
     .error-text { color: var(--red); font-size: 0.82rem; margin-top: 10px; }
+
+    /* ── Trace steps ── */
+    .hint-step { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+    .hint-step-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .step-badge { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; }
+    .step-title { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .step-desc { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .token-grid { display: flex; flex-direction: column; gap: 6px; }
+    .token-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; flex-wrap: wrap; }
+    .token-idx { color: var(--muted); font-size: 0.7rem; width: 20px; flex-shrink: 0; }
+    .token-val { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 4px 10px; color: var(--text); word-break: break-all; }
+    .token-val.scc { border-color:var(--sc); color:var(--sc); }
+    .token-val.l1c { border-color:var(--l1); color:var(--l1); }
+    .token-val.l2c { border-color:var(--l2); color:var(--l2); }
+    .token-val.l3c { border-color:var(--l3); color:var(--l3); }
+    .token-val.l4c { border-color:var(--l4); color:var(--l4); }
+    .token-val.l5c { border-color:var(--l5); color:var(--l5); }
+    .token-val.l6c { border-color:var(--l6); color:var(--l6); }
+    .token-arrow { color: var(--muted); font-size: 0.75rem; }
+    .shift-badge { font-size: 0.62rem; background: var(--accent2); color:#fff; border-radius:4px; padding:2px 6px; opacity:.85; }
+    .full-str { background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 12px; font-size: 0.8rem; word-break: break-all; line-height: 1.7; }
+    .grid-info { font-size: 0.7rem; color: var(--muted); margin-bottom: 10px; }
+    .grid-info span { color: var(--accent3); }
+    .final-output { background: var(--bg); border: 1px solid var(--accent); border-radius: 8px; padding: 14px; font-size: 0.82rem; color: var(--accent); word-break: break-all; margin-top: 8px; text-align: center; }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
@@ -154,69 +199,100 @@
 </head>
 <body>
 
-<header>
-  <div class="header-badge">&#x25C6; Classified &#x25C6;</div>
-  <h1>Trilayer Chaos</h1>
-  <div class="subtitle">Cipher &nbsp;&#x2014;&nbsp; PIN-locked per message</div>
-</header>
-
-<div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('encode', this)">&#x2191; Encode</button>
-  <button class="tab-btn" onclick="switchTab('decode', this)">&#x2193; Decode</button>
+<!-- ── Top-right lock ── -->
+<div id="lock-wrap">
+  <button class="lock-btn" id="lock-btn" onclick="togglePinPop()">
+    <span id="lock-icon">🔒</span>
+    <span id="lock-text">CLASSIFIED</span>
+  </button>
+  <div class="pin-popover" id="pin-pop" style="display:none">
+    <div class="pin-pop-label" id="pin-pop-label">Enter PIN to unlock cipher info</div>
+    <input class="pin-field" id="pin-field" type="password"
+           placeholder="••••••" autocomplete="off" maxlength="30"
+           onkeydown="if(event.key==='Enter')tryUnlock()" />
+    <div class="pin-pop-err" id="pin-err"></div>
+    <div class="pin-pop-btns">
+      <button class="btn-unlock" onclick="tryUnlock()">Unlock</button>
+      <button class="btn-cancel" onclick="closePinPop()">Cancel</button>
+    </div>
+  </div>
 </div>
 
-<!-- ════ ENCODE ════ -->
+<header>
+  <div class="header-badge">&#x25C6; Cryptographic Engine &#x25C6;</div>
+  <h1>Trilayer Chaos</h1>
+  <div class="subtitle">7-Layer Cipher &nbsp;&#x2014;&nbsp; Encode / Decode</div>
+</header>
+
+<!-- Layer chips: labels visible always, descriptions only when unlocked -->
+<div class="layers-row">
+  <div class="layer-chip">
+    <div class="layer-dot" style="background:var(--sc)"></div>
+    <div>SC<div class="chip-desc">j-escape: special chars→letter pairs</div></div>
+  </div>
+  <div class="layer-chip">
+    <div class="layer-dot" style="background:var(--l1)"></div>
+    <div>L1<div class="chip-desc">reverse + 2-letter blind tag</div></div>
+  </div>
+  <div class="layer-chip">
+    <div class="layer-dot" style="background:var(--l2)"></div>
+    <div>L2<div class="chip-desc">Fibonacci Caesar shift</div></div>
+  </div>
+  <div class="layer-chip">
+    <div class="layer-dot" style="background:var(--l3)"></div>
+    <div>L3<div class="chip-desc">adjacent letter pair swap</div></div>
+  </div>
+  <div class="layer-chip">
+    <div class="layer-dot" style="background:var(--l4)"></div>
+    <div>L4<div class="chip-desc">Euler-polynomial Vigenere</div></div>
+  </div>
+  <div class="layer-chip">
+    <div class="layer-dot" style="background:var(--l5)"></div>
+    <div>L5<div class="chip-desc">rail fence (2–4 rails, per token)</div></div>
+  </div>
+  <div class="layer-chip">
+    <div class="layer-dot" style="background:var(--l6)"></div>
+    <div>L6<div class="chip-desc">columnar transposition (cross-token)</div></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('encode',this)">&#x2191; Encode</button>
+  <button class="tab-btn" onclick="switchTab('decode',this)">&#x2193; Decode</button>
+  <button class="tab-btn" id="tab-trace" onclick="switchTab('trace',this)">&#x25D1; Trace</button>
+</div>
+
+<!-- ENCODE -->
 <div id="panel-encode" class="panel active">
   <div class="card">
     <div class="card-label">Plaintext &mdash; letters, spaces &amp; punctuation (no ~ or @)</div>
-    <textarea id="enc-input" placeholder="Type your message here…" rows="4"></textarea>
+    <textarea id="enc-input" placeholder="Hello world! What's happening?" rows="4"></textarea>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="runEncode()">Encode &rarr;</button>
-      <button class="btn btn-ghost" onclick="clearEnc()">Clear</button>
+      <button class="btn btn-ghost" onclick="clearPanel('encode')">Clear</button>
     </div>
-
     <div id="enc-result" class="result-box">
-      <div class="result-row">
+      <div class="result-hdr">
         <span class="result-label">Ciphertext</span>
         <button class="btn btn-sm" id="cp-enc" onclick="copyEl('enc-output','cp-enc','Copy')">Copy</button>
       </div>
       <div id="enc-output" class="result-text"></div>
-
-      <div class="pin-result-block">
-        <div class="result-label">&#x1F512; Decode PIN &mdash; required to decrypt</div>
-        <div class="pin-result-row">
-          <div id="enc-pin" class="pin-display"></div>
-          <button class="btn btn-sm" id="cp-pin" onclick="copyEl('enc-pin','cp-pin','Copy PIN')">Copy PIN</button>
-        </div>
-        <div class="pin-warning">
-          <strong>Share both the ciphertext and PIN.</strong> Without the exact PIN this message cannot be decoded &mdash; a wrong PIN silently produces garbage.
-        </div>
-      </div>
     </div>
     <div id="enc-error" class="error-text"></div>
   </div>
 </div>
 
-<!-- ════ DECODE ════ -->
+<!-- DECODE -->
 <div id="panel-decode" class="panel">
   <div class="card">
     <div class="card-label">Ciphertext</div>
-    <textarea id="dec-input" placeholder="Paste ciphertext here, wrapped in &lt;&lt; &gt;&gt;" rows="4"></textarea>
-
-    <div class="pin-row">
-      <span class="pin-label">&#x1F512; PIN</span>
-      <input class="pin-input" id="dec-pin" type="text" maxlength="20"
-             placeholder="Enter PIN" autocomplete="off" spellcheck="false" />
-      <span class="pin-note">Wrong PIN = silent garbage &mdash; no error shown</span>
-    </div>
-
+    <textarea id="dec-input" placeholder="Paste ciphertext wrapped in &lt;&lt; &gt;&gt;" rows="4"></textarea>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="runDecode()">Decode &rarr;</button>
-      <button class="btn btn-ghost" onclick="clearDec()">Clear</button>
+      <button class="btn btn-ghost" onclick="clearPanel('decode')">Clear</button>
     </div>
-
     <div id="dec-result" class="result-box">
-      <div class="result-row">
+      <div class="result-hdr">
         <span class="result-label">Plaintext</span>
         <button class="btn btn-sm" id="cp-dec" onclick="copyEl('dec-output','cp-dec','Copy')">Copy</button>
       </div>
@@ -226,70 +302,80 @@
   </div>
 </div>
 
+<!-- TRACE (only accessible when unlocked) -->
+<div id="panel-trace" class="panel">
+  <div class="card">
+    <div class="card-label">Plaintext to trace through all 7 layers</div>
+    <textarea id="trace-input" placeholder="Enter a message to see how each layer transforms it…" rows="3"></textarea>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="runTrace()">Trace &rarr;</button>
+      <button class="btn btn-ghost" onclick="clearPanel('trace')">Clear</button>
+    </div>
+  </div>
+  <div id="trace-output"></div>
+</div>
+
 <script>
-// ═══════════════════════════════════════════════════════
-//  PRNG + PIN KEY SCHEDULE
-//  Everything — substitution, shifts, Vigenere, rail
-//  counts, separator — is derived from the PIN.
-//  Wrong PIN → completely wrong key material → garbage.
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+//  PIN LOCK  —  change UNLOCK_PIN to whatever you want
+// ─────────────────────────────────────────────
+const UNLOCK_PIN = 'CHAOS'; // ← change this
 
-function fnv32(s) {
-  let h = 0x811c9dc5 >>> 0;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 0x01000193) >>> 0;
+let unlocked = false;
+
+function togglePinPop() {
+  if (unlocked) { lock(); return; }
+  const pop = document.getElementById('pin-pop');
+  const open = pop.style.display !== 'none';
+  pop.style.display = open ? 'none' : 'block';
+  if (!open) { document.getElementById('pin-field').value = ''; document.getElementById('pin-err').textContent = ''; setTimeout(() => document.getElementById('pin-field').focus(), 50); }
+}
+
+function closePinPop() {
+  document.getElementById('pin-pop').style.display = 'none';
+}
+
+function tryUnlock() {
+  const val = document.getElementById('pin-field').value.trim().toUpperCase();
+  if (val === UNLOCK_PIN.toUpperCase()) {
+    unlocked = true;
+    document.body.classList.add('unlocked');
+    document.getElementById('lock-icon').textContent = '🔓';
+    document.getElementById('lock-text').textContent = 'UNLOCKED';
+    document.getElementById('pin-pop-label').textContent = 'Click to re-lock';
+    closePinPop();
+  } else {
+    const f = document.getElementById('pin-field');
+    document.getElementById('pin-err').textContent = 'Incorrect PIN';
+    f.classList.add('shake');
+    f.value = '';
+    setTimeout(() => f.classList.remove('shake'), 400);
   }
-  return h;
 }
 
-function makePRNG(seed) {
-  let s = (seed >>> 0) || 1;
-  return () => { s ^= s<<13; s ^= s>>>17; s ^= s<<5; return (s>>>0)/4294967296; };
-}
-
-function shuffled(rng) {
-  const a = Array.from({length:26},(_,i)=>i);
-  for (let i=25; i>0; i--) {
-    const j = Math.floor(rng()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
+function lock() {
+  unlocked = false;
+  document.body.classList.remove('unlocked');
+  document.getElementById('lock-icon').textContent = '🔒';
+  document.getElementById('lock-text').textContent = 'CLASSIFIED';
+  // If trace tab was active, switch to encode
+  if (document.getElementById('panel-trace').classList.contains('active')) {
+    switchTab('encode', document.querySelector('.tab-btn'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.tab-btn').classList.add('active');
   }
-  return a;
 }
 
-function pinSchedule(pin) {
-  if (!pin || !pin.trim()) throw new Error('PIN is required to decode.');
-  const h = fnv32('\x01TC' + pin + '\x02' + pin.length);
+// Close popover when clicking outside
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('lock-wrap');
+  if (!wrap.contains(e.target)) closePinPop();
+});
 
-  // L0 — monoalphabetic substitution (full alphabet shuffle)
-  const fwd = shuffled(makePRNG(fnv32(h + 0xAA)));
-  const rev = new Array(26);
-  fwd.forEach((v,i) => rev[v] = i);
-
-  // L2 — 64 Caesar shifts (1–25)
-  const shRng = makePRNG(fnv32(h + 0xBB));
-  const shifts = Array.from({length:64}, () => 1 + Math.floor(shRng()*25));
-
-  // L4 — 64-value Vigenere key (0–25)
-  const vRng = makePRNG(fnv32(h + 0xCC));
-  const vKey = Array.from({length:64}, () => Math.floor(vRng()*26));
-
-  // L5 — rail counts per token (2–4)
-  const rRng = makePRNG(fnv32(h + 0xDD));
-  const railCounts = Array.from({length:64}, () => 2 + Math.floor(rRng()*3));
-
-  // Separator — 3 digits derived from PIN (never appears in letter-only token bodies)
-  const sRng = makePRNG(fnv32(h + 0xEE));
-  const sep = [0,1,2].map(() => String.fromCharCode(48 + Math.floor(sRng()*10))).join('');
-
-  return { fwd, rev, shifts, vKey, railCounts, sep };
-}
-
-// ═══════════════════════════════════════════════════════
-//  SPECIAL CHAR ENCODING  (SC — PIN-independent)
+// ─────────────────────────────────────────────
+//  SPECIAL CHAR ENCODING  (SC)
 //  'j' is the escape prefix: j→jj, !→ja, ?→jb, .→jc …
-//  Special chars become letter pairs, go through all layers.
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 
 const J_MAP = {
   'j':'j','!':'a','?':'b','.':'c',',':'d',"'":'e','-':'f',
@@ -313,9 +399,26 @@ function scDecode(word) {
   return out;
 }
 
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+//  CIPHER CONSTANTS
+// ─────────────────────────────────────────────
+
+// L2: Fibonacci Caesar shifts — (fib(n) % 25) + 1, range 1–25
+const FIB_SHIFTS = (() => {
+  const f = [1,1];
+  while (f.length < 64) f.push(f[f.length-2] + f[f.length-1]);
+  return f.map(n => (n % 25) + 1);
+})();
+
+// L4: Fixed Vigenere key — Euler polynomial (i²+i+41) mod 26 interleaved with its reversal
+const _e = Array.from({length:64}, (_,i) => (i*i+i+41)%26);
+const VIGENERE_KEY = _e.map((v,i) => (v + _e[63-i]*3 + i*7) % 26);
+
+const SEP = '~~';
+
+// ─────────────────────────────────────────────
 //  HELPERS
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 
 const isLetter = c => /[a-zA-Z]/.test(c);
 
@@ -328,49 +431,32 @@ function shiftLetter(c, n) {
 const bodyOf = t => t.slice(0,-3);
 const tagOf  = t => t.slice(-3);
 
-// ═══════════════════════════════════════════════════════
-//  L0 — PIN-KEYED MONOALPHABETIC SUBSTITUTION
-// ═══════════════════════════════════════════════════════
-
-function l0Apply(word, table) {
-  return [...word].map(c => {
-    if (!isLetter(c)) return c;
-    const base = c>='a'&&c<='z' ? 97 : 65;
-    return String.fromCharCode(table[c.charCodeAt(0)-base] + base);
-  }).join('');
-}
-
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 //  L1 — REVERSE + BLIND TAG
-//  Length n encoded as @XY: lo=(n×7+5)%26, hi=n÷26 %26
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 
 function encodeLen(n) {
   return String.fromCharCode((n*7+5)%26+97) + String.fromCharCode(Math.floor(n/26)%26+97);
 }
-function l1Encode(word) {
-  return word.split('').reverse().join('') + '@' + encodeLen(word.length);
-}
-function l1Decode(token) {
-  return bodyOf(token).split('').reverse().join('');
-}
+function l1Encode(word) { return word.split('').reverse().join('') + '@' + encodeLen(word.length); }
+function l1Decode(token) { return bodyOf(token).split('').reverse().join(''); }
 
-// ═══════════════════════════════════════════════════════
-//  L2 — PIN-SEEDED CAESAR (non-linear, per token)
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+//  L2 — FIBONACCI CAESAR
+// ─────────────────────────────────────────────
 
-function l2Encode(token, i, sch) {
-  const s = sch.shifts[i%64];
+function l2Encode(token, i) {
+  const s = FIB_SHIFTS[i%64];
   return bodyOf(token).split('').map(c=>shiftLetter(c,s)).join('') + tagOf(token);
 }
-function l2Decode(token, i, sch) {
-  const s = sch.shifts[i%64];
+function l2Decode(token, i) {
+  const s = FIB_SHIFTS[i%64];
   return bodyOf(token).split('').map(c=>shiftLetter(c,-s)).join('') + tagOf(token);
 }
 
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 //  L3 — ADJACENT LETTER PAIR SWAP (self-inverse)
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 
 function l3Apply(token) {
   const body = bodyOf(token);
@@ -381,29 +467,28 @@ function l3Apply(token) {
   return ch.join('') + tagOf(token);
 }
 
-// ═══════════════════════════════════════════════════════
-//  L4 — PIN-KEYED VIGENERE
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+//  L4 — VIGENERE (fixed Euler-polynomial key)
+// ─────────────────────────────────────────────
 
-function l4Apply(token, i, sign, sch) {
+function l4Apply(token, i, sign) {
   const body = bodyOf(token);
   let lc = 0;
   const result = body.split('').map(c => {
     if (!isLetter(c)) return c;
-    return shiftLetter(c, sign * sch.vKey[(i*7+lc++)%64]);
+    return shiftLetter(c, sign * VIGENERE_KEY[(i*7+lc++)%64]);
   }).join('');
   return result + tagOf(token);
 }
 
-// ═══════════════════════════════════════════════════════
-//  L5 — RAIL FENCE (per-token, PIN-seeded rail count)
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+//  L5 — RAIL FENCE (per-token, 2–4 rails cycling)
+// ─────────────────────────────────────────────
 
 function railFence(letters, rails, decode) {
   const L = letters.length;
   if (L<2 || rails>=L) return letters.slice();
-  const assign=[];
-  let r=0, dir=1;
+  const assign=[]; let r=0, dir=1;
   for (let i=0;i<L;i++) {
     assign.push(r);
     if(r===0) dir=1; else if(r===rails-1) dir=-1;
@@ -417,111 +502,172 @@ function railFence(letters, rails, decode) {
     const sizes=Array(rails).fill(0);
     for(let i=0;i<L;i++) sizes[assign[i]]++;
     const rows=[]; let p=0;
-    for(let row=0;row<rails;row++){rows.push(letters.slice(p,p+sizes[row]));p+=sizes[row];}
+    for(let rr=0;rr<rails;rr++){rows.push(letters.slice(p,p+sizes[rr]));p+=sizes[rr];}
     const result=new Array(L), idx=Array(rails).fill(0);
     for(let i=0;i<L;i++) result[i]=rows[assign[i]][idx[assign[i]]++];
     return result;
   }
 }
 
-function l5Apply(token, i, decode, sch) {
-  const body = bodyOf(token);
-  const lpos=[], letts=[];
+function l5Apply(token, i, decode) {
+  const body=bodyOf(token);
+  const lpos=[],letts=[];
   for(let k=0;k<body.length;k++) if(isLetter(body[k])){lpos.push(k);letts.push(body[k]);}
   if(lpos.length<2) return token;
-  const result = railFence(letts, sch.railCounts[i%64], decode);
-  const ch = body.split('');
+  const rails = 2 + (i%3);
+  const result = railFence(letts, rails, decode);
+  const ch=body.split('');
   for(let k=0;k<lpos.length;k++) ch[lpos[k]]=result[k];
   return ch.join('') + tagOf(token);
 }
 
-// ═══════════════════════════════════════════════════════
-//  L6 — COLUMNAR TRANSPOSITION (cross-token, outermost)
-//  All letters in the assembled string rearranged into a
-//  ceil(√L)×rows grid read column-major. ~~, @, digits stay.
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+//  L6 — COLUMNAR TRANSPOSITION (cross-token)
+// ─────────────────────────────────────────────
 
 function colTranspose(str, decode) {
-  const pos=[], letts=[];
+  const pos=[],letts=[];
   for(let i=0;i<str.length;i++) if(isLetter(str[i])){pos.push(i);letts.push(str[i]);}
   const L=letts.length;
   if(L<2) return str;
-  const cols=Math.ceil(Math.sqrt(L));
-  const rows=Math.ceil(L/cols);
+  const cols=Math.ceil(Math.sqrt(L)), rows=Math.ceil(L/cols);
   const full=L%cols===0?cols:L%cols;
   const orig=[];
-  for(let c=0;c<cols;c++){
-    const rc=c<full?rows:rows-1;
-    for(let row=0;row<rc;row++) orig.push(row*cols+c);
-  }
+  for(let c=0;c<cols;c++){const rc=c<full?rows:rows-1;for(let row=0;row<rc;row++) orig.push(row*cols+c);}
   let result;
-  if(!decode){
-    result=orig.map(idx=>letts[idx]);
-  } else {
-    const restored=new Array(L);
-    for(let i=0;i<L;i++) restored[orig[i]]=letts[i];
-    result=restored;
-  }
+  if(!decode) { result=orig.map(idx=>letts[idx]); }
+  else { const rest=new Array(L); for(let i=0;i<L;i++) rest[orig[i]]=letts[i]; result=rest; }
   const ch=str.split('');
   for(let i=0;i<pos.length;i++) ch[pos[i]]=result[i];
   return ch.join('');
 }
 
-// ═══════════════════════════════════════════════════════
-//  FULL ENCODE / DECODE
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+//  FULL PIPELINE
+// ─────────────────────────────────────────────
 
 function validateInput(s) {
   if(/[~@]/.test(s)) throw new Error('Characters ~ and @ are reserved by the cipher.');
-  if(!s.trim()) throw new Error('Enter a message to encode.');
+  if(!s.trim()) throw new Error('Please enter a message.');
 }
 
-function encode(plaintext, pin) {
+function encode(plaintext) {
   validateInput(plaintext);
-  const sch = pinSchedule(pin);
-  const tokens = plaintext.split(' ').map((word, i) => {
-    let w = l0Apply(scEncode(word), sch.fwd);   // SC then PIN-sub
-    let t = l1Encode(w);
-    t = l2Encode(t, i, sch);
-    t = l3Apply(t);
-    t = l4Apply(t, i, 1, sch);
-    t = l5Apply(t, i, false, sch);
+  const tokens = plaintext.split(' ').map((word,i) => {
+    let t = l1Encode(scEncode(word));
+    t = l2Encode(t,i); t = l3Apply(t); t = l4Apply(t,i,1); t = l5Apply(t,i,false);
     return t;
   });
-  return '<<' + colTranspose(tokens.join(sch.sep), false) + '>>';
+  return '<<' + colTranspose(tokens.join(SEP), false) + '>>';
 }
 
-function decode(ciphertext, pin) {
-  const sch = pinSchedule(pin);
+function decode(ciphertext) {
   const s = ciphertext.trim();
   if(!s.startsWith('<<')||!s.endsWith('>>'))
     throw new Error('Ciphertext must be wrapped in << >>');
   const inner = colTranspose(s.slice(2,-2), true);
   if(!inner) throw new Error('Empty ciphertext');
-  return inner.split(sch.sep).map((token, i) => {
-    if(token.length<3) throw new Error(`Token ${i+1} malformed — wrong PIN or corrupted ciphertext`);
-    let t = l5Apply(token, i, true, sch);
-    t = l4Apply(t, i, -1, sch);
-    t = l3Apply(t);
-    t = l2Decode(t, i, sch);
-    let w = l1Decode(t);
-    return scDecode(l0Apply(w, sch.rev));        // un-sub then SC-decode
+  return inner.split(SEP).map((token,i) => {
+    if(token.length<3) throw new Error(`Token ${i+1} malformed`);
+    let t=l5Apply(token,i,true); t=l4Apply(t,i,-1); t=l3Apply(t); t=l2Decode(t,i);
+    return scDecode(l1Decode(t));
   }).join(' ');
 }
 
-// ═══════════════════════════════════════════════════════
-//  PIN GENERATION
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+//  TRACE (locked behind PIN)
+// ─────────────────────────────────────────────
 
-function generatePIN() {
-  // 8-char alphanumeric PIN (uppercase) — 36^8 ≈ 2.8 trillion combinations
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no O,0,I,1 (ambiguous)
-  return Array.from({length:8}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+function buildTrace(plaintext) {
+  validateInput(plaintext);
+  const words = plaintext.split(' ');
+  const sc  = words.map(scEncode);
+  const s1  = sc.map(l1Encode);
+  const s2  = s1.map((t,i)=>l2Encode(t,i));
+  const s3  = s2.map(l3Apply);
+  const s4  = s3.map((t,i)=>l4Apply(t,i,1));
+  const s5  = s4.map((t,i)=>l5Apply(t,i,false));
+  const asm = s5.join(SEP);
+  const s6  = colTranspose(asm, false);
+  const L   = (asm.match(/[a-zA-Z]/g)||[]).length;
+  const cols= Math.ceil(Math.sqrt(L)), grows=Math.ceil(L/cols);
+
+  let html = '';
+
+  html += step('SC','var(--sc)','Special Char Encoding',
+    'Non-letter chars escaped as j+letter pair (j→jj, !→ja, ?→jb, .→jc …)',
+    words.map((w,i)=>tok(i,w,sc[i],'scc',w===sc[i]?'':Object.entries(J_MAP).filter(([k])=>w.includes(k)&&k!=='j').map(([k])=>`${k}→j${J_MAP[k]}`).join(' '))).join(''));
+
+  html += step('L1','var(--l1)','Reverse + Blind Tag',
+    'Body reversed; length n encoded as @XY using n×7+5 mod 26 (hides word lengths)',
+    sc.map((w,i)=>tok(i,w,s1[i],'l1c')).join(''));
+
+  html += step('L2','var(--l2)','Fibonacci Caesar',
+    'Letters in token i shifted by Fibonacci[i] mod 25 + 1 — non-linear, non-sequential',
+    s1.map((t,i)=>tok(i,t,s2[i],'l2c',`fib+${FIB_SHIFTS[i%64]}`)).join(''));
+
+  html += step('L3','var(--l3)','Adjacent Pair Swap',
+    'Letter-only positions swapped in pairs: (0↔1), (2↔3)… — self-inverse',
+    s2.map((t,i)=>tok(i,t,s3[i],'l3c')).join(''));
+
+  html += step('L4','var(--l4)','Vigenere Pass',
+    'Letters shifted by fixed Euler-polynomial key (i²+i+41) mod 26 — unique stream per token',
+    s3.map((t,i)=>tok(i,t,s4[i],'l4c',`v@${(i*7)%64}`)).join(''));
+
+  html += step('L5','var(--l5)','Rail Fence (per-token)',
+    'Letters arranged in 2–4 rail zigzag and read row-by-row; rails cycle per token',
+    s4.map((t,i)=>tok(i,t,s5[i],'l5c',`${2+(i%3)} rails`)).join(''));
+
+  html += `<div class="hint-step">
+    <div class="hint-step-hdr">
+      <div class="step-badge" style="background:var(--l6)22;border:1px solid var(--l6);color:var(--l6)">L6</div>
+      <div><div class="step-title" style="color:var(--l6)">Columnar Transposition</div>
+      <div class="step-desc">All letters across all tokens rearranged in a ${cols}×${grows} grid — crosses token boundaries</div></div>
+    </div>
+    <div class="grid-info">L = <span>${L} letters</span> &nbsp;·&nbsp; Grid <span>${cols} cols × ${grows} rows</span> &nbsp;·&nbsp; ~~ and @ frozen</div>
+    <div style="margin-bottom:8px"><div class="card-label" style="margin-bottom:4px">Before (joined tokens)</div>
+    <div class="full-str" style="color:var(--l5)">${esc(asm)}</div></div>
+    <div><div class="card-label" style="margin-bottom:4px">After (letters mixed across token spans)</div>
+    <div class="full-str" style="color:var(--l6)">${esc(s6)}</div></div>
+  </div>`;
+
+  html += `<div class="hint-step">
+    <div class="hint-step-hdr">
+      <div class="step-badge" style="background:#00e5ff22;border:1px solid var(--accent);color:var(--accent)">&sum;</div>
+      <div><div class="step-title" style="color:var(--accent)">Final Ciphertext</div>
+      <div class="step-desc">Wrapped in &lt;&lt; &gt;&gt; &nbsp;·&nbsp; all 7 layers applied</div></div>
+    </div>
+    <div class="final-output">${esc('<<'+s6+'>>') }</div>
+  </div>`;
+
+  return html;
 }
 
-// ═══════════════════════════════════════════════════════
+function tok(i, from, to, cls, badge) {
+  return `<div class="token-row">
+    <span class="token-idx">${i+1}.</span>
+    ${from?`<span class="token-val">${esc(from)}</span><span class="token-arrow">&#x2192;</span>`:''}
+    <span class="token-val ${cls}">${esc(to)}</span>
+    ${badge?`<span class="shift-badge">${esc(badge)}</span>`:''}
+  </div>`;
+}
+
+function step(label, color, title, desc, body) {
+  return `<div class="hint-step">
+    <div class="hint-step-hdr">
+      <div class="step-badge" style="background:${color}22;border:1px solid ${color};color:${color}">${label}</div>
+      <div><div class="step-title" style="color:${color}">${title}</div>
+      <div class="step-desc">${desc}</div></div>
+    </div>
+    <div class="token-grid">${body}</div>
+  </div>`;
+}
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─────────────────────────────────────────────
 //  UI
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
 
 function switchTab(name, btn) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -531,72 +677,59 @@ function switchTab(name, btn) {
 }
 
 function runEncode() {
-  const errEl = document.getElementById('enc-error');
-  const resEl = document.getElementById('enc-result');
-  errEl.textContent = '';
+  const errEl=document.getElementById('enc-error'), resEl=document.getElementById('enc-result');
+  errEl.textContent='';
   try {
-    const plaintext = document.getElementById('enc-input').value;
-    const pin = generatePIN();
-    const cipher = encode(plaintext, pin);
-    document.getElementById('enc-output').textContent = cipher;
-    document.getElementById('enc-pin').textContent = pin;
-    resEl.classList.add('visible');
-    resetBtn('cp-enc', 'Copy');
-    resetBtn('cp-pin', 'Copy PIN');
-  } catch(e) {
-    errEl.textContent = e.message;
-    resEl.classList.remove('visible');
-  }
+    document.getElementById('enc-output').textContent = encode(document.getElementById('enc-input').value);
+    resEl.classList.add('visible'); resetBtn('cp-enc','Copy');
+  } catch(e) { errEl.textContent=e.message; resEl.classList.remove('visible'); }
 }
 
 function runDecode() {
-  const errEl = document.getElementById('dec-error');
-  const resEl = document.getElementById('dec-result');
-  errEl.textContent = '';
+  const errEl=document.getElementById('dec-error'), resEl=document.getElementById('dec-result');
+  errEl.textContent='';
   try {
-    const ciphertext = document.getElementById('dec-input').value;
-    const pin = document.getElementById('dec-pin').value.trim();
-    if(!pin) throw new Error('Enter the PIN that was generated when this message was encoded.');
-    if(!ciphertext.trim()) throw new Error('Paste the ciphertext above.');
-    document.getElementById('dec-output').textContent = decode(ciphertext, pin);
-    resEl.classList.add('visible');
-    resetBtn('cp-dec', 'Copy');
-  } catch(e) {
-    errEl.textContent = e.message;
-    resEl.classList.remove('visible');
+    const inp=document.getElementById('dec-input').value;
+    if(!inp.trim()) throw new Error('Paste ciphertext to decode.');
+    document.getElementById('dec-output').textContent = decode(inp);
+    resEl.classList.add('visible'); resetBtn('cp-dec','Copy');
+  } catch(e) { errEl.textContent=e.message; resEl.classList.remove('visible'); }
+}
+
+function runTrace() {
+  const outEl=document.getElementById('trace-output');
+  try { outEl.innerHTML = buildTrace(document.getElementById('trace-input').value); }
+  catch(e) { outEl.innerHTML=`<div class="error-text">${esc(e.message)}</div>`; }
+}
+
+function clearPanel(name) {
+  const map = {
+    encode: [['enc-input','enc-error'],['enc-result','result-box']],
+    decode: [['dec-input','dec-error'],['dec-result','result-box']],
+    trace:  [['trace-input'],['trace-output','innerHTML']],
+  };
+  if (name==='encode'||name==='decode') {
+    const pfx = name==='encode'?'enc':'dec';
+    document.getElementById(`${pfx}-input`).value='';
+    document.getElementById(`${pfx}-result`).classList.remove('visible');
+    document.getElementById(`${pfx}-error`).textContent='';
+  } else {
+    document.getElementById('trace-input').value='';
+    document.getElementById('trace-output').innerHTML='';
   }
 }
 
-function clearEnc() {
-  document.getElementById('enc-input').value = '';
-  document.getElementById('enc-result').classList.remove('visible');
-  document.getElementById('enc-error').textContent = '';
-}
-
-function clearDec() {
-  document.getElementById('dec-input').value = '';
-  document.getElementById('dec-pin').value = '';
-  document.getElementById('dec-result').classList.remove('visible');
-  document.getElementById('dec-error').textContent = '';
-}
-
 function copyEl(id, btnId, label) {
-  navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
-    const btn = document.getElementById(btnId);
-    btn.textContent = 'Copied!';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = label; btn.classList.remove('copied'); }, 1800);
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>{
+    const btn=document.getElementById(btnId);
+    btn.textContent='Copied!'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=label;btn.classList.remove('copied');},1800);
   });
 }
+function resetBtn(id, label) { const b=document.getElementById(id); b.textContent=label; b.classList.remove('copied'); }
 
-function resetBtn(id, label) {
-  const btn = document.getElementById(id);
-  btn.textContent = label;
-  btn.classList.remove('copied');
-}
-
-document.getElementById('enc-input').addEventListener('keydown', e => { if(e.ctrlKey&&e.key==='Enter') runEncode(); });
-document.getElementById('dec-input').addEventListener('keydown', e => { if(e.ctrlKey&&e.key==='Enter') runDecode(); });
+document.getElementById('enc-input').addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter')runEncode();});
+document.getElementById('dec-input').addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter')runDecode();});
 </script>
 </body>
 </html>
