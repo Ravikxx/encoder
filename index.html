@@ -232,7 +232,7 @@
   </div>
   <div class="layer-chip">
     <div class="layer-dot" style="background:var(--l1)"></div>
-    <div>L1<div class="chip-desc">8-char chunks, reverse + blind tag</div></div>
+    <div>L1<div class="chip-desc">8-char chunks, reverse + pad + blind tag</div></div>
   </div>
   <div class="layer-chip">
     <div class="layer-dot" style="background:var(--l2)"></div>
@@ -428,8 +428,8 @@ function shiftLetter(c, n) {
   return String.fromCharCode(((c.charCodeAt(0)-base+((n%26+26)%26))%26)+base);
 }
 
-const bodyOf = t => t.slice(0,-3);
-const tagOf  = t => t.slice(-3);
+const bodyOf = t => t.slice(0,-2);
+const tagOf  = t => t.slice(-2);
 
 // ─────────────────────────────────────────────
 //  L1 — REVERSE + BLIND TAG
@@ -438,8 +438,18 @@ const tagOf  = t => t.slice(-3);
 function encodeLen(n) {
   return String.fromCharCode((n*7+5)%26+97) + String.fromCharCode(Math.floor(n/26)%26+97);
 }
-function l1Encode(word) { return word.split('').reverse().join('') + '@' + encodeLen(word.length); }
-function l1Decode(token) { return bodyOf(token).split('').reverse().join(''); }
+function decodeLen(s) {
+  return ((s.charCodeAt(0) - 97 - 5 + 26) * 15) % 26;
+}
+function l1Encode(chunk) {
+  const rev = chunk.split('').reverse().join('');
+  const pad = 'a'.repeat(CHUNK - chunk.length);
+  return rev + pad + encodeLen(chunk.length);
+}
+function l1Decode(token) {
+  const len = decodeLen(tagOf(token));
+  return bodyOf(token).slice(0, len).split('').reverse().join('');
+}
 
 // ─────────────────────────────────────────────
 //  L2 — FIBONACCI CAESAR
@@ -573,14 +583,12 @@ function decode(ciphertext) {
     throw new Error('Ciphertext must be wrapped in << >>');
   const inner = colTranspose(s.slice(2,-2), true);
   if (!inner) throw new Error('Empty ciphertext');
+  const TOKEN_LEN = CHUNK + 2;
+  if (inner.length % TOKEN_LEN !== 0)
+    throw new Error('Malformed ciphertext — unexpected length');
   const tokens = [];
-  let start = 0;
-  for (let k = 0; k < inner.length; k++) {
-    if (inner[k] === '@') { tokens.push(inner.slice(start, k + 3)); start = k + 3; }
-  }
-  if (!tokens.length) throw new Error('No tokens found — malformed ciphertext');
+  for (let i = 0; i < inner.length; i += TOKEN_LEN) tokens.push(inner.slice(i, i + TOKEN_LEN));
   const bodies = tokens.map((token, i) => {
-    if (token.length < 3) throw new Error(`Token ${i+1} malformed`);
     let t = l5Apply(token,i,true); t = l4Apply(t,i,-1); t = l3Apply(t); t = l2Decode(t,i);
     return l1Decode(t);
   });
@@ -616,8 +624,8 @@ function buildTrace(plaintext) {
     'Spaces → jz, j → jj, special chars → j+letter; full message processed before chunking',
     tok(0, plaintext, sc_full, 'scc', sc_badge));
 
-  html += step('L1','var(--l1)','Chunk + Reverse + Blind Tag',
-    `SC message split into ${CHUNK}-char chunks; each reversed and tagged with encoded length`,
+  html += step('L1','var(--l1)','Chunk + Reverse + Pad + Blind Tag',
+    `SC message split into ${CHUNK}-char chunks; reversed, padded to ${CHUNK} chars, then 2-letter length tag appended`,
     chunks.map((c,i)=>tok(i, c, s1[i], 'l1c')).join(''));
 
   html += step('L2','var(--l2)','Fibonacci Caesar',
@@ -640,9 +648,9 @@ function buildTrace(plaintext) {
     <div class="hint-step-hdr">
       <div class="step-badge" style="background:var(--l6)22;border:1px solid var(--l6);color:var(--l6)">L6</div>
       <div><div class="step-title" style="color:var(--l6)">Columnar Transposition</div>
-      <div class="step-desc">All letters across all chunks rearranged in a ${cols}×${grows} grid — crosses chunk boundaries, @ frozen</div></div>
+      <div class="step-desc">All letters across all chunks rearranged in a ${cols}×${grows} grid — crosses all chunk boundaries</div></div>
     </div>
-    <div class="grid-info">L = <span>${L} letters</span> &nbsp;·&nbsp; Grid <span>${cols} cols × ${grows} rows</span> &nbsp;·&nbsp; @ frozen in place</div>
+    <div class="grid-info">L = <span>${L} letters</span> &nbsp;·&nbsp; Grid <span>${cols} cols × ${grows} rows</span> &nbsp;·&nbsp; every character is a letter</div>
     <div style="margin-bottom:8px"><div class="card-label" style="margin-bottom:4px">Before (joined chunks)</div>
     <div class="full-str" style="color:var(--l5)">${esc(asm)}</div></div>
     <div><div class="card-label" style="margin-bottom:4px">After (letters mixed across chunk spans)</div>
